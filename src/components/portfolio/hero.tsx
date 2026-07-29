@@ -129,6 +129,7 @@ export function Hero() {
             <img
               src={data.profile.profileImage}
               alt={data.profile.name}
+              loading="lazy"
               className="h-full w-full object-cover"
             />
           </div>

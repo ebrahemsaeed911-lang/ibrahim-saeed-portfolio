@@ -18,7 +18,7 @@ export function Loader() {
   useEffect(() => {
     let frame: number
     let startTime = performance.now()
-    const duration = 2200
+    const duration = 800
 
     function animate(now: number) {
       const elapsed = now - startTime
@@ -29,7 +29,7 @@ export function Loader() {
       if (pct < 100) {
         frame = requestAnimationFrame(animate)
       } else {
-        setTimeout(() => setShow(false), 500)
+        setShow(false)
       }
     }
     frame = requestAnimationFrame(animate)

@@ -16,6 +16,7 @@ export function About() {
                 <img
                   src={data.profile.aboutImage}
                   alt={`Portrait of ${data.profile.name}`}
+                  loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>

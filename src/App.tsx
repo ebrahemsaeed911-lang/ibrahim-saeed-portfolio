@@ -5,13 +5,21 @@ import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const About = lazy(() => import('@/components/portfolio/about'))
-const Skills = lazy(() => import('@/components/portfolio/skills'))
-const Experience = lazy(() => import('@/components/portfolio/experience'))
-const Projects = lazy(() => import('@/components/portfolio/projects'))
-const Services = lazy(() => import('@/components/portfolio/services'))
-const Contact = lazy(() => import('@/components/portfolio/contact'))
-const Footer = lazy(() => import('@/components/portfolio/footer'))
+const aboutImp = import('@/components/portfolio/about')
+const skillsImp = import('@/components/portfolio/skills')
+const experienceImp = import('@/components/portfolio/experience')
+const projectsImp = import('@/components/portfolio/projects')
+const servicesImp = import('@/components/portfolio/services')
+const contactImp = import('@/components/portfolio/contact')
+const footerImp = import('@/components/portfolio/footer')
+
+const About = lazy(() => aboutImp)
+const Skills = lazy(() => skillsImp)
+const Experience = lazy(() => experienceImp)
+const Projects = lazy(() => projectsImp)
+const Services = lazy(() => servicesImp)
+const Contact = lazy(() => contactImp)
+const Footer = lazy(() => footerImp)
 
 export default function App() {
   const { data } = usePortfolioData()

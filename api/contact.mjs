@@ -1,12 +1,5 @@
-require('dotenv').config()
-const express = require('express')
-const nodemailer = require('nodemailer')
-const cors = require('cors')
-const { createClient } = require('@supabase/supabase-js')
-
-const app = express()
-app.use(cors())
-app.use(express.json())
+import { createClient } from '@supabase/supabase-js'
+import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -31,7 +24,11 @@ async function getPortfolioData() {
   return data?.data
 }
 
-app.post('/api/contact', async (req, res) => {
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
   const { name, email, message } = req.body
 
   if (!name || !email || !message) {
@@ -74,6 +71,4 @@ app.post('/api/contact', async (req, res) => {
     console.error('Email error:', err)
     res.status(500).json({ error: 'Failed to send message' })
   }
-})
-
-app.listen(3001, () => console.log('Server running on http://localhost:3001'))
+}

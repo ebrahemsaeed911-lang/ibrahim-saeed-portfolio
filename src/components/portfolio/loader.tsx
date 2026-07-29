@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const steps = [
   { label: 'Initializing', range: [0, 15] },
@@ -10,6 +11,7 @@ const steps = [
 ]
 
 export function Loader() {
+  const { data } = usePortfolioData()
   const [progress, setProgress] = useState(0)
   const [show, setShow] = useState(true)
 
@@ -48,7 +50,7 @@ export function Loader() {
           <div className="flex w-80 flex-col items-center gap-10">
             {/* Name */}
             <p className="text-2xl font-bold tracking-widest text-foreground">
-              Ibrahim Saeed
+              {data.profile.name}
             </p>
 
             {/* Line in the middle with fill/unfill scan effect */}

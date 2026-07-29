@@ -3,14 +3,13 @@ import { motion } from 'motion/react'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { Reveal } from './reveal'
 import { FacebookIcon, GithubIcon, LinkedinIcon } from './brand-icons'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const socials = [
-  { icon: GithubIcon, label: 'GitHub', href: 'https://github.com/ebrahemsaeed911-lang' },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: '#' },
-  { icon: FacebookIcon, label: 'Facebook', href: '#' },
-]
+const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, facebook: FacebookIcon } as const
 
 export function Contact() {
+  const { data } = usePortfolioData()
+  const { contact, social } = data
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -46,46 +45,49 @@ export function Contact() {
       <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
         <div>
           <Reveal>
-            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">Contact</p>
+            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">{contact.sectionTitle}</p>
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-              Let&apos;s build something together
+              {contact.heading}
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-md text-pretty leading-relaxed text-muted-foreground">
-              Have a project in mind or just want to say hi? Drop me a message
-              and I&apos;ll get back to you as soon as possible.
+              {contact.description}
             </p>
           </Reveal>
 
           <Reveal delay={0.15}>
             <a
-              href="mailto:ebrahemsaeed911@gmail.com"
+              href={`mailto:${contact.email}`}
               className="mt-8 inline-flex items-center gap-3 text-lg font-medium text-foreground transition-colors hover:text-primary"
             >
               <span className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-primary">
                 <Mail size={18} />
               </span>
-              ebrahemsaeed911@gmail.com
+              {contact.email}
             </a>
           </Reveal>
 
           <Reveal delay={0.2}>
             <div className="mt-8 flex gap-3">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-1 hover:border-primary/50 hover:text-primary"
-                >
-                  <s.icon size={18} />
-                </a>
-              ))}
+              {(['github', 'linkedin', 'facebook'] as const).map((key) => {
+                const Icon = socialIcons[key]
+                const href = social[key]
+                return (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={key}
+                    className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-1 hover:border-primary/50 hover:text-primary"
+                  >
+                    <Icon size={18} />
+                  </a>
+                )
+              })}
             </div>
           </Reveal>
         </div>

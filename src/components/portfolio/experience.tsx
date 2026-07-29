@@ -1,45 +1,28 @@
 import { motion } from 'motion/react'
 import { Briefcase } from 'lucide-react'
 import { Reveal } from './reveal'
-
-const experience = [
-  {
-    period: '2024 — Present',
-    title: 'Building Personal Projects',
-    company: 'Self-Taught',
-    desc: 'Building projects with React, JavaScript, TypeScript, HTML, CSS, and Python. Learning component architecture, state management, and modern front-end tools.',
-  },
-  {
-    period: '2023 — 2024',
-    title: 'Learning Web Development',
-    company: 'Self-Taught',
-    desc: 'Focused on front-end technologies: HTML5, CSS3, responsive design, and JavaScript ES6+. Started learning React and building interactive UIs.',
-  },
-  {
-    period: '2022 — 2023',
-    title: 'Started Programming',
-    company: 'Self-Taught',
-    desc: 'Learned the fundamentals of programming with Python. Explored problem-solving, logic, and basic scripting before moving into web development.',
-  },
-]
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
 export function Experience() {
+  const { data } = usePortfolioData()
+  const { experience } = data
+
   return (
     <section id="experience" className="relative px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 text-center">
           <Reveal>
-            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">Experience</p>
+            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">{experience.sectionTitle}</p>
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">My journey so far</h2>
+            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">{experience.heading}</h2>
           </Reveal>
         </div>
 
         <div className="relative mx-auto max-w-3xl">
           <div className="absolute left-8 top-0 h-full w-px bg-gradient-to-b from-primary via-accent to-transparent" />
 
-          {experience.map((item, i) => (
+          {experience.items.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: -30 }}

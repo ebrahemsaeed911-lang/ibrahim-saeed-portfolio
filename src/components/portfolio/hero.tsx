@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
 import { useRef } from 'react'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const floats = [
   { label: '</>', top: '18%', left: '8%', delay: 0, dur: 6 },
@@ -10,6 +11,7 @@ const floats = [
 ]
 
 export function Hero() {
+  const { data } = usePortfolioData()
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -20,6 +22,8 @@ export function Hero() {
 
   const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+  const { hero } = data
 
   return (
     <section
@@ -55,7 +59,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            Open to opportunities
+            {hero.badge}
           </motion.div>
 
           <motion.p
@@ -64,11 +68,11 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-3 flex items-center gap-2 font-mono text-sm uppercase tracking-[0.3em] text-primary"
           >
-            <Sparkles size={14} /> Hi, I&apos;m Ibrahim Saeed
+            <Sparkles size={14} /> Hi, I'm {data.profile.name}
           </motion.p>
 
           <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-            {'Front-End'.split('').map((c, i) => (
+            {hero.title.split('').map((c, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 40 }}
@@ -80,7 +84,7 @@ export function Hero() {
               </motion.span>
             ))}
             <br />
-            <span className="text-gradient">Developer</span>
+            <span className="text-gradient">{hero.subtitle}</span>
           </h1>
 
           <motion.p
@@ -89,9 +93,7 @@ export function Hero() {
             transition={{ delay: 0.7 }}
             className="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground"
           >
-            A passionate self-taught developer learning to build clean,
-            responsive websites and applications with React, HTML, CSS,
-            JavaScript, and Python.
+            {hero.description}
           </motion.p>
 
           <motion.div
@@ -101,17 +103,17 @@ export function Hero() {
             className="mt-9 flex flex-col items-center gap-3 sm:flex-row md:items-start"
           >
             <button
-              onClick={() => go('projects')}
+              onClick={() => go(hero.buttons.primary.action)}
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-105"
             >
-              View Projects
+              {hero.buttons.primary.text}
               <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
             <button
-              onClick={() => go('contact')}
+              onClick={() => go(hero.buttons.secondary.action)}
               className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium text-foreground transition-colors hover:border-primary/50"
             >
-              Contact Me
+              {hero.buttons.secondary.text}
             </button>
           </motion.div>
         </div>
@@ -125,8 +127,8 @@ export function Hero() {
           <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/40 to-accent/40 blur-3xl" />
           <div className="relative h-64 w-64 overflow-hidden rounded-full border-2 border-border sm:h-72 sm:w-72 md:h-80 md:w-80">
             <img
-              src="/profile.png"
-              alt="Ibrahim Saeed"
+              src={data.profile.profileImage}
+              alt={data.profile.name}
               className="h-full w-full object-cover"
             />
           </div>

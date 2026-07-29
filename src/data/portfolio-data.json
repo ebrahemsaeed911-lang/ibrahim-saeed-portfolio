@@ -1,0 +1,174 @@
+{
+  "profile": {
+    "name": "Ibrahim Saeed",
+    "initials": "IS",
+    "mainTitle": "Front-End Developer",
+    "profileImage": "/profile.png",
+    "aboutImage": "/profile.png",
+    "favicon": ""
+  },
+  "hero": {
+    "badge": "Open to opportunities",
+    "greeting": "Hi, I'm Ibrahim Saeed",
+    "title": "Front-End",
+    "subtitle": "Developer",
+    "description": "A passionate self-taught developer learning to build clean, responsive websites and applications with React, HTML, CSS, JavaScript, and Python.",
+    "profileImage": "/profile.png",
+    "buttons": {
+      "primary": { "text": "View Projects", "action": "projects" },
+      "secondary": { "text": "Contact Me", "action": "contact" }
+    }
+  },
+  "about": {
+    "sectionTitle": "About Me",
+    "heading": "Turning ideas into refined web experiences",
+    "paragraphs": [
+      "I'm a passionate front-end developer learning React and modern web technologies. I enjoy turning ideas into clean, responsive interfaces that look great and work smoothly across every device.",
+      "Currently focused on React, TypeScript, and building projects that solve real problems. Every line of code is a step forward in my learning journey."
+    ],
+    "stats": [
+      { "value": "1+", "label": "Year Learning" },
+      { "value": "+5", "label": "Projects Built" },
+      { "value": "100%", "label": "Self-Taught" }
+    ]
+  },
+  "skills": {
+    "sectionTitle": "Skills",
+    "heading": "Technologies I work with",
+    "items": [
+      { "name": "HTML5", "level": 95, "desc": "Semantic markup, accessible structure, SEO-friendly.", "icon": "</>" },
+      { "name": "CSS3", "level": 90, "desc": "Responsive layouts, flexbox/grid, animations, design systems.", "icon": "{ }" },
+      { "name": "JavaScript (ES6+)", "level": 85, "desc": "DOM manipulation, async patterns, ES6+ features, logic.", "icon": "JS" },
+      { "name": "TypeScript", "level": 75, "desc": "Static typing, interfaces, generics, type-safe code.", "icon": "TS" },
+      { "name": "Python", "level": 80, "desc": "Scripting, automation, data processing, backend logic.", "icon": "PY" },
+      { "name": "React", "level": 75, "desc": "Component architecture, JSX, hooks, state management, SPA development.", "icon": "⚛" },
+      { "name": "Git & GitHub", "level": 85, "desc": "Version control, branching, collaboration, CI workflows.", "icon": "GIT" }
+    ]
+  },
+  "experience": {
+    "sectionTitle": "Experience",
+    "heading": "My journey so far",
+    "items": [
+      {
+        "period": "2024 \u2014 Present",
+        "title": "Building Personal Projects",
+        "company": "Self-Taught",
+        "desc": "Building projects with React, JavaScript, TypeScript, HTML, CSS, and Python. Learning component architecture, state management, and modern front-end tools."
+      },
+      {
+        "period": "2023 \u2014 2024",
+        "title": "Learning Web Development",
+        "company": "Self-Taught",
+        "desc": "Focused on front-end technologies: HTML5, CSS3, responsive design, and JavaScript ES6+. Started learning React and building interactive UIs."
+      },
+      {
+        "period": "2022 \u2014 2023",
+        "title": "Started Programming",
+        "company": "Self-Taught",
+        "desc": "Learned the fundamentals of programming with Python. Explored problem-solving, logic, and basic scripting before moving into web development."
+      }
+    ]
+  },
+  "projects": {
+    "sectionTitle": "Selected Work",
+    "heading": "Projects I'm proud of",
+    "description": "A selection of recent builds \u2014 each crafted with attention to detail, performance, and delightful interaction.",
+    "items": [
+      {
+        "title": "Noor Islamic Web",
+        "desc": "Comprehensive Islamic app: full Quran with reciters, athkar, prayer times, tasbeeh, ruqyah, and more.",
+        "image": "/project-noor.png",
+        "tags": ["JavaScript", "HTML", "CSS", "PWA"],
+        "type": "Web App",
+        "demo": "https://noor-islamic-web.vercel.app"
+      },
+      {
+        "title": "Work Time Tracker",
+        "desc": "Track attendance, calculate work hours, expected salary, and deductions. Export reports to PDF and CSV.",
+        "image": "/project-wtt.png",
+        "tags": ["JavaScript", "HTML", "CSS", "PWA"],
+        "type": "Web App",
+        "demo": "https://work-time-tracker-ibrahim.vercel.app/",
+        "github": "https://github.com/ebrahemsaeed911-lang/work-time-tracker"
+      },
+      {
+        "title": "Personal Portfolio",
+        "desc": "Interactive portfolio with dark mode, glassmorphism, smooth animations, custom cursor, particles, and email integration.",
+        "image": "/project-portfolio.png",
+        "tags": ["React", "JavaScript", "Tailwind CSS", "TypeScript"],
+        "type": "Web App",
+        "demo": "#home"
+      },
+      {
+        "title": "Weather App",
+        "desc": "Desktop weather app built with Python and Tkinter. Fetches real-time temperature, humidity, wind speed, and pressure using the OpenWeatherMap API.",
+        "image": "/project-weather.png",
+        "tags": ["Python", "Tkinter", "API"],
+        "type": "Desktop App",
+        "demo": "#",
+        "github": "https://github.com/ebrahemsaeed911-lang/weather-app/blob/main/weather%20-app.py"
+      },
+      {
+        "title": "Text Editor",
+        "desc": "Multi-tab text editor built with Python and Tkinter. Features file management, keyboard shortcuts, sidebar controls, and tabbed interface.",
+        "image": "/project-text-editor.png",
+        "tags": ["Python", "Tkinter", "GUI"],
+        "type": "Desktop App",
+        "demo": "#",
+        "github": "https://github.com/ebrahemsaeed911-lang/text-editor/blob/main/text_editor%20.py"
+      }
+    ]
+  },
+  "services": {
+    "sectionTitle": "Services",
+    "heading": "How I can help you",
+    "items": [
+      {
+        "icon": "MonitorSmartphone",
+        "title": "Responsive Web Design",
+        "desc": "Pixel-perfect interfaces that adapt beautifully across mobile, tablet, and desktop.",
+        "num": "01"
+      },
+      {
+        "icon": "Layout",
+        "title": "Landing Page Development",
+        "desc": "High-converting, fast-loading landing pages designed to capture attention and drive action.",
+        "num": "02"
+      },
+      {
+        "icon": "Wrench",
+        "title": "Website Maintenance",
+        "desc": "Ongoing updates, performance tuning, and bug fixes to keep your site running flawlessly.",
+        "num": "03"
+      }
+    ]
+  },
+  "nav": {
+    "links": [
+      { "id": "home", "label": "Home" },
+      { "id": "about", "label": "About" },
+      { "id": "skills", "label": "Skills" },
+      { "id": "experience", "label": "Experience" },
+      { "id": "projects", "label": "Projects" },
+      { "id": "services", "label": "Services" },
+      { "id": "contact", "label": "Contact" }
+    ],
+    "talkText": "Let's talk",
+    "name": "Ibrahim Saeed",
+    "logo": "IS"
+  },
+  "social": {
+    "github": "https://github.com/ebrahemsaeed911-lang",
+    "linkedin": "#",
+    "facebook": "#"
+  },
+  "contact": {
+    "sectionTitle": "Contact",
+    "heading": "Let's build something together",
+    "description": "Have a project in mind or just want to say hi? Drop me a message and I'll get back to you as soon as possible.",
+    "email": "ebrahemsaeed911@gmail.com"
+  },
+  "footer": {
+    "tagline": "Crafted with care using HTML, CSS & JavaScript."
+  }
+}

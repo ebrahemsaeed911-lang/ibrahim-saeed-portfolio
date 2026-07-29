@@ -1,18 +1,9 @@
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 import { Reveal } from './reveal'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const skills = [
-  { name: 'HTML5', level: 95, desc: 'Semantic markup, accessible structure, SEO-friendly.', icon: '</>' },
-  { name: 'CSS3', level: 90, desc: 'Responsive layouts, flexbox/grid, animations, design systems.', icon: '{ }' },
-  { name: 'JavaScript (ES6+)', level: 85, desc: 'DOM manipulation, async patterns, ES6+ features, logic.', icon: 'JS' },
-  { name: 'TypeScript', level: 75, desc: 'Static typing, interfaces, generics, type-safe code.', icon: 'TS' },
-  { name: 'Python', level: 80, desc: 'Scripting, automation, data processing, backend logic.', icon: 'PY' },
-  { name: 'React', level: 75, desc: 'Component architecture, JSX, hooks, state management, SPA development.', icon: '⚛' },
-  { name: 'Git & GitHub', level: 85, desc: 'Version control, branching, collaboration, CI workflows.', icon: 'GIT' },
-]
-
-function SkillCard({ skill, index }: { skill: (typeof skills)[number]; index: number }) {
+function SkillCard({ skill, index }: { skill: { name: string; level: number; desc: string; icon: string }; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -49,20 +40,23 @@ function SkillCard({ skill, index }: { skill: (typeof skills)[number]; index: nu
 }
 
 export function Skills() {
+  const { data } = usePortfolioData()
+  const { skills } = data
+
   return (
     <section id="skills" className="relative px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 text-center">
           <Reveal>
-            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">Skills</p>
+            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">{skills.sectionTitle}</p>
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">Technologies I work with</h2>
+            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">{skills.heading}</h2>
           </Reveal>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {skills.map((skill, i) => (
+          {skills.items.map((skill, i) => (
             <SkillCard key={skill.name} skill={skill} index={i} />
           ))}
         </div>

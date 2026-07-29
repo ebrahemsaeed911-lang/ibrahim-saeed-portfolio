@@ -1,23 +1,13 @@
-import { motion } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
 import { FacebookIcon, GithubIcon, LinkedinIcon } from './brand-icons'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const socials = [
-  { icon: GithubIcon, label: 'GitHub', href: 'https://github.com/ebrahemsaeed911-lang' },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: '#' },
-  { icon: FacebookIcon, label: 'Facebook', href: '#' },
-]
-
-const links = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'contact', label: 'Contact' },
-]
+const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, facebook: FacebookIcon } as const
 
 export function Footer() {
+  const { data } = usePortfolioData()
+  const { nav, social, footer } = data
+
   const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
@@ -33,7 +23,7 @@ export function Footer() {
         </button>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          {links.map((l) => (
+          {nav.links.map((l) => (
             <button
               key={l.id}
               onClick={() => go(l.id)}
@@ -45,22 +35,25 @@ export function Footer() {
         </nav>
 
         <div className="flex gap-3">
-          {socials.map((s) => (
-            <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-1 hover:border-primary/50 hover:text-primary"
-                >
-              <s.icon size={16} />
-            </a>
-          ))}
+          {(['github', 'linkedin', 'facebook'] as const).map((key) => {
+            const Icon = socialIcons[key]
+            return (
+              <a
+                key={key}
+                href={social[key]}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={key}
+                className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-1 hover:border-primary/50 hover:text-primary"
+              >
+                <Icon size={16} />
+              </a>
+            )
+          })}
         </div>
 
         <p className="text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Ibrahim Saeed. Crafted with care using HTML, CSS & JavaScript.
+          &copy; {new Date().getFullYear()} {data.profile.name}. {footer.tagline}
         </p>
       </div>
     </footer>

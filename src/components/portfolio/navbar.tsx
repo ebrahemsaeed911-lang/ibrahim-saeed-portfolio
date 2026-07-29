@@ -1,21 +1,19 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { Menu, X } from 'lucide-react'
+import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const links = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'services', label: 'Services' },
-  { id: 'contact', label: 'Contact' },
-]
+const AdminOverlay = lazy(() => import('@/components/admin/admin-overlay'))
 
 export function Navbar() {
+  const { data } = usePortfolioData()
+  const { nav } = data
+  const [showAdmin, setShowAdmin] = useState(false)
   const [active, setActive] = useState('home')
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const clickCount = useRef(0)
+  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
@@ -23,6 +21,17 @@ export function Navbar() {
     damping: 30,
     restDelta: 0.001,
   })
+
+  function handleLogoClicks() {
+    clickCount.current++
+    if (clickTimer.current) clearTimeout(clickTimer.current)
+    if (clickCount.current >= 3) {
+      clickCount.current = 0
+      setShowAdmin(true)
+      return
+    }
+    clickTimer.current = setTimeout(() => { clickCount.current = 0 }, 1500)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -37,7 +46,7 @@ export function Navbar() {
       },
       { rootMargin: '-45% 0px -50% 0px' }
     )
-    links.forEach((l) => {
+    nav.links.forEach((l) => {
       const el = document.getElementById(l.id)
       if (el) observer.observe(el)
     })
@@ -46,7 +55,7 @@ export function Navbar() {
       window.removeEventListener('scroll', onScroll)
       observer.disconnect()
     }
-  }, [])
+  }, [nav.links])
 
   const go = (id: string) => {
     setOpen(false)
@@ -67,17 +76,17 @@ export function Navbar() {
           }`}
         >
           <button
-            onClick={() => go('home')}
+            onClick={handleLogoClicks}
             className="group flex items-center gap-2 pl-2 font-mono text-sm font-semibold tracking-tight"
           >
             <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground transition-transform duration-300 group-hover:rotate-12">
-              IS
+              {data.profile.initials}
             </span>
-            <span className="hidden text-foreground sm:inline">Ibrahim Saeed</span>
+            <span className="hidden text-foreground sm:inline">{data.profile.name}</span>
           </button>
 
           <ul className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
+            {nav.links.map((l) => (
               <li key={l.id}>
                 <button
                   onClick={() => go(l.id)}
@@ -103,7 +112,7 @@ export function Navbar() {
               onClick={() => go('contact')}
               className="hidden rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform hover:scale-105 sm:block"
             >
-              Let&apos;s talk
+              {nav.talkText}
             </button>
             <button
               onClick={() => setOpen((o) => !o)}
@@ -129,7 +138,7 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-4 bg-background/95 backdrop-blur-xl md:hidden"
           >
-            {links.map((l, i) => (
+            {nav.links.map((l, i) => (
               <motion.button
                 key={l.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -146,6 +155,12 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {showAdmin && (
+        <Suspense fallback={null}>
+          <AdminOverlay onClose={() => setShowAdmin(false)} />
+        </Suspense>
+      )}
     </>
   )
 }

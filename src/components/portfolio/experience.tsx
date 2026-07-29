@@ -3,7 +3,7 @@ import { Briefcase } from 'lucide-react'
 import { Reveal } from './reveal'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
-export function Experience() {
+export default function Experience() {
   const { data } = usePortfolioData()
   const { experience } = data
 

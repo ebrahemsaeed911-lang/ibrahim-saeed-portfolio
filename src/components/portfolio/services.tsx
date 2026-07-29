@@ -7,7 +7,7 @@ const iconMap: Record<string, LucideIcon> = {
   MonitorSmartphone, Layout, Wrench,
 }
 
-export function Services() {
+export default function Services() {
   const { data } = usePortfolioData()
   const { services } = data
 

@@ -1,7 +1,7 @@
 import { usePortfolioData } from '@/data/use-portfolio-data'
 import { Reveal } from './reveal'
 
-export function About() {
+export default function About() {
   const { data } = usePortfolioData()
   const { about } = data
 

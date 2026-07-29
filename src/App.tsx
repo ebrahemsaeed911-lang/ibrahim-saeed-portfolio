@@ -6,13 +6,13 @@ import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const About = lazy(() => import('@/components/portfolio/about').then(m => ({ default: m.About })))
-const Skills = lazy(() => import('@/components/portfolio/skills').then(m => ({ default: m.Skills })))
-const Experience = lazy(() => import('@/components/portfolio/experience').then(m => ({ default: m.Experience })))
-const Projects = lazy(() => import('@/components/portfolio/projects').then(m => ({ default: m.Projects })))
-const Services = lazy(() => import('@/components/portfolio/services').then(m => ({ default: m.Services })))
-const Contact = lazy(() => import('@/components/portfolio/contact').then(m => ({ default: m.Contact })))
-const Footer = lazy(() => import('@/components/portfolio/footer').then(m => ({ default: m.Footer })))
+const About = lazy(() => import('@/components/portfolio/about'))
+const Skills = lazy(() => import('@/components/portfolio/skills'))
+const Experience = lazy(() => import('@/components/portfolio/experience'))
+const Projects = lazy(() => import('@/components/portfolio/projects'))
+const Services = lazy(() => import('@/components/portfolio/services'))
+const Contact = lazy(() => import('@/components/portfolio/contact'))
+const Footer = lazy(() => import('@/components/portfolio/footer'))
 
 export default function App() {
   const { data } = usePortfolioData()

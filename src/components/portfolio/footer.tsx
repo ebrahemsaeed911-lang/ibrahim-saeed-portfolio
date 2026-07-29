@@ -4,7 +4,7 @@ import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, facebook: FacebookIcon } as const
 
-export function Footer() {
+export default function Footer() {
   const { data } = usePortfolioData()
   const { nav, social, footer } = data
 

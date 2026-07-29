@@ -14,7 +14,7 @@ const overlayStyles: Record<string, string> = {
   'Desktop App': 'from-card via-sky-950/20 to-transparent',
 }
 
-export function Projects() {
+export default function Projects() {
   const { data } = usePortfolioData()
   const { projects } = data
 

@@ -7,7 +7,7 @@ import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, facebook: FacebookIcon } as const
 
-export function Contact() {
+export default function Contact() {
   const { data } = usePortfolioData()
   const { contact, social } = data
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')

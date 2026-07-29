@@ -39,7 +39,7 @@ function SkillCard({ skill, index }: { skill: { name: string; level: number; des
   )
 }
 
-export function Skills() {
+export default function Skills() {
   const { data } = usePortfolioData()
   const { skills } = data
 

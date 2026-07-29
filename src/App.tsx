@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { Loader } from '@/components/portfolio/loader'
+import { useEffect, useState } from 'react'
 import { CustomCursor } from '@/components/portfolio/custom-cursor'
 import { Particles } from '@/components/portfolio/particles'
 import { Navbar } from '@/components/portfolio/navbar'
@@ -15,6 +14,7 @@ import { usePortfolioData } from '@/data/use-portfolio-data'
 
 export default function App() {
   const { data } = usePortfolioData()
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     document.title = `${data.profile.name} — ${data.profile.mainTitle}`
@@ -25,22 +25,27 @@ export default function App() {
     }
   }, [data.profile.name, data.profile.mainTitle, data.profile.favicon])
 
+  useEffect(() => { setReady(true) }, [])
+
   return (
     <>
-      <Loader />
       <CustomCursor />
       <Particles />
       <Navbar />
       <main className="relative">
         <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Services />
-        <Contact />
+        {ready && (
+          <>
+            <About />
+            <Skills />
+            <Experience />
+            <Projects />
+            <Services />
+            <Contact />
+          </>
+        )}
       </main>
-      <Footer />
+      {ready && <Footer />}
     </>
   )
 }

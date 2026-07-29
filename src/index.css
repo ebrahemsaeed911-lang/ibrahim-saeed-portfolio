@@ -173,11 +173,6 @@
   color: var(--color-foreground);
 }
 
-#skills, #experience, #projects, #services, #contact {
-  content-visibility: auto;
-  contain-intrinsic-size: 600px;
-}
-
 ::-webkit-scrollbar {
   width: 10px;
 }

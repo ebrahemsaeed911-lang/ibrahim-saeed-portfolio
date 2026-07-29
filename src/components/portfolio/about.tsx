@@ -6,7 +6,7 @@ export default function About() {
   const { about } = data
 
   return (
-    <section id="about" className="relative px-6 py-28 md:py-36">
+    <section id="about" className="relative px-6 pt-12 pb-28 md:pt-20 md:pb-36">
       <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-2">
         <Reveal>
           <div className="group relative mx-auto w-full max-w-sm">

@@ -5,6 +5,7 @@ export type PortfolioData = typeof defaultData
 
 const STORAGE_KEY = 'portfolio_data'
 const CACHE_DURATION = 24 * 60 * 60 * 1000
+const CACHE_VERSION = 2
 
 async function getSupabase() {
   const { supabase } = await import('@/lib/supabase')
@@ -44,7 +45,7 @@ function loadFromCache(): PortfolioData | null {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
     const cached = JSON.parse(raw)
-    if (Date.now() - cached.timestamp > CACHE_DURATION) {
+    if (Date.now() - cached.timestamp > CACHE_DURATION || cached.version !== CACHE_VERSION) {
       localStorage.removeItem(STORAGE_KEY)
       return null
     }
@@ -55,7 +56,7 @@ function loadFromCache(): PortfolioData | null {
 }
 
 function saveToCache(data: PortfolioData) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ data, timestamp: Date.now() }))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ data, timestamp: Date.now(), version: CACHE_VERSION }))
 }
 
 export function usePortfolioData() {

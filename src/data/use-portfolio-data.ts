@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import defaultData from './portfolio-data.json'
 
 export type PortfolioData = typeof defaultData
 
 const STORAGE_KEY = 'portfolio_data'
-const CACHE_DURATION = 24 * 60 * 60 * 1000
 const CACHE_VERSION = 2
 
 async function getSupabase() {
@@ -45,7 +44,7 @@ function loadFromCache(): PortfolioData | null {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
     const cached = JSON.parse(raw)
-    if (Date.now() - cached.timestamp > CACHE_DURATION || cached.version !== CACHE_VERSION) {
+    if (cached.version !== CACHE_VERSION) {
       localStorage.removeItem(STORAGE_KEY)
       return null
     }
@@ -60,27 +59,31 @@ function saveToCache(data: PortfolioData) {
 }
 
 export function usePortfolioData() {
-  const [data, setData] = useState<PortfolioData>(defaultData)
+  const [data, setData] = useState<PortfolioData>(() => loadFromCache() ?? defaultData)
   const [loading, setLoading] = useState(true)
+  const initialData = useRef(data)
 
   useEffect(() => {
-    async function init() {
-      const cached = loadFromCache()
-      if (cached) {
-        setData(cached)
-        setLoading(false)
-        return
+    setLoading(false)
+
+    fetchFromSupabase().then(remote => {
+      if (!remote) return
+
+      if (JSON.stringify(remote) !== JSON.stringify(initialData.current)) {
+        setData(remote)
       }
 
-      const remote = await fetchFromSupabase()
-      if (remote) {
-        setData(remote)
-        saveToCache(remote)
-      }
-      setLoading(false)
-    }
-    init()
+      saveToCache(remote)
+    })
   }, [])
+
+  const refresh = async () => {
+    const remote = await fetchFromSupabase()
+    if (remote) {
+      setData(remote)
+      saveToCache(remote)
+    }
+  }
 
   const save = async (newData: PortfolioData) => {
     setData(newData)
@@ -94,5 +97,5 @@ export function usePortfolioData() {
     if (error) console.error('Failed to sync to Supabase:', error)
   }
 
-  return { data, loading, save }
+  return { data, loading, save, refresh }
 }

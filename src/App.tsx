@@ -2,24 +2,16 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
 import About from '@/components/portfolio/about'
+import Skills from '@/components/portfolio/skills'
+import Experience from '@/components/portfolio/experience'
+import Projects from '@/components/portfolio/projects'
+import Services from '@/components/portfolio/services'
+import Contact from '@/components/portfolio/contact'
+import Footer from '@/components/portfolio/footer'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const CustomCursor = lazy(() => import('@/components/portfolio/custom-cursor').then(m => ({ default: m.CustomCursor })))
 const Particles = lazy(() => import('@/components/portfolio/particles').then(m => ({ default: m.Particles })))
-
-const skillsImp = import('@/components/portfolio/skills')
-const experienceImp = import('@/components/portfolio/experience')
-const projectsImp = import('@/components/portfolio/projects')
-const servicesImp = import('@/components/portfolio/services')
-const contactImp = import('@/components/portfolio/contact')
-const footerImp = import('@/components/portfolio/footer')
-
-const Skills = lazy(() => skillsImp)
-const Experience = lazy(() => experienceImp)
-const Projects = lazy(() => projectsImp)
-const Services = lazy(() => servicesImp)
-const Contact = lazy(() => contactImp)
-const Footer = lazy(() => footerImp)
 
 export default function App() {
   const { data } = usePortfolioData()
@@ -52,13 +44,13 @@ export default function App() {
       <main className="relative">
         <Hero />
         <About />
-        <Suspense fallback={null}><Skills /></Suspense>
-        <Suspense fallback={null}><Experience /></Suspense>
-        <Suspense fallback={null}><Projects /></Suspense>
-        <Suspense fallback={null}><Services /></Suspense>
-        <Suspense fallback={null}><Contact /></Suspense>
+        <Skills />
+        <Experience />
+        <Projects />
+        <Services />
+        <Contact />
       </main>
-      <Suspense fallback={null}><Footer /></Suspense>
+      <Footer />
     </>
   )
 }

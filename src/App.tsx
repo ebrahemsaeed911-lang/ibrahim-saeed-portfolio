@@ -1,12 +1,12 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
+import About from '@/components/portfolio/about'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const CustomCursor = lazy(() => import('@/components/portfolio/custom-cursor').then(m => ({ default: m.CustomCursor })))
 const Particles = lazy(() => import('@/components/portfolio/particles').then(m => ({ default: m.Particles })))
 
-const aboutImp = import('@/components/portfolio/about')
 const skillsImp = import('@/components/portfolio/skills')
 const experienceImp = import('@/components/portfolio/experience')
 const projectsImp = import('@/components/portfolio/projects')
@@ -14,7 +14,6 @@ const servicesImp = import('@/components/portfolio/services')
 const contactImp = import('@/components/portfolio/contact')
 const footerImp = import('@/components/portfolio/footer')
 
-const About = lazy(() => aboutImp)
 const Skills = lazy(() => skillsImp)
 const Experience = lazy(() => experienceImp)
 const Projects = lazy(() => projectsImp)
@@ -52,7 +51,7 @@ export default function App() {
       <Navbar />
       <main className="relative">
         <Hero />
-        <Suspense fallback={null}><About /></Suspense>
+        <About />
         <Suspense fallback={null}><Skills /></Suspense>
         <Suspense fallback={null}><Experience /></Suspense>
         <Suspense fallback={null}><Projects /></Suspense>

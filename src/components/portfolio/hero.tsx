@@ -125,11 +125,13 @@ export function Hero() {
           className="relative shrink-0"
         >
           <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/40 to-accent/40 blur-3xl" />
-          <div className="relative h-64 w-64 overflow-hidden rounded-full border-2 border-border sm:h-72 sm:w-72 md:h-80 md:w-80">
+          <div className="relative h-64 w-64 overflow-hidden rounded-full border-2 border-border bg-secondary sm:h-72 sm:w-72 md:h-80 md:w-80">
             <img
               src={data.profile.profileImage + '?width=400'}
               alt={data.profile.name}
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           </div>

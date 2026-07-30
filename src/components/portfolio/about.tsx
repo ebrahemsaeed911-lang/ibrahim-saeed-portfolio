@@ -11,16 +11,18 @@ export default function About() {
         <Reveal>
           <div className="group relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-tr from-primary/30 to-accent/30 blur-2xl transition-opacity duration-500 group-hover:opacity-80" />
-            <div className="glass overflow-hidden rounded-[1.75rem] p-2">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem]">
-                <img
-                  src={data.profile.aboutImage + '?width=600'}
-                  alt={`Portrait of ${data.profile.name}`}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+              <div className="glass overflow-hidden rounded-[1.75rem] p-2">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem] bg-secondary">
+                  <img
+                    src={data.profile.aboutImage + '?width=600'}
+                    alt={`Portrait of ${data.profile.name}`}
+                    loading="lazy"
+                    fetchPriority="low"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
               </div>
-            </div>
           </div>
         </Reveal>
 

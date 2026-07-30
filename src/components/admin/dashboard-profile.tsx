@@ -45,8 +45,13 @@ export default function DashboardProfile({ data, onChange }: Props) {
         onChange={(v) => set('aboutImage', v)}
       />
 
+      <label className="flex flex-col gap-1.5 text-sm">
+        <span className="text-muted-foreground">Favicon text (browser tab)</span>
+        <input value={p.faviconText} onChange={(e) => set('faviconText', e.target.value)} maxLength={6} className="rounded-xl border border-border bg-background/40 px-4 py-3 font-mono text-foreground outline-none focus:border-primary/60" />
+      </label>
+
       <ImageUploader
-        label="Favicon (browser tab icon)"
+        label="Favicon image (overrides text)"
         value={p.favicon}
         onChange={(v) => set('favicon', v)}
       />

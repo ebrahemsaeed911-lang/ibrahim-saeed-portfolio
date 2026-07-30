@@ -26,14 +26,6 @@ export default function App() {
       link.href = data.profile.favicon || 'data:image/svg+xml,' + encodeURIComponent(svg)
     }
 
-    requestAnimationFrame(() => {
-      const el = document.getElementById('boot-loader')
-      if (el) {
-        el.style.transition = 'opacity 0.4s ease'
-        el.style.opacity = '0'
-        setTimeout(() => el.remove(), 500)
-      }
-    })
   }, [data.profile.name, data.profile.mainTitle, data.profile.favicon, data.profile.faviconText])
 
   return (

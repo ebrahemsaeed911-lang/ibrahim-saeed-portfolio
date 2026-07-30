@@ -4,7 +4,7 @@ import defaultData from './portfolio-data.json'
 export type PortfolioData = typeof defaultData
 
 const STORAGE_KEY = 'portfolio_data'
-const CACHE_DURATION = 5 * 60 * 1000
+const CACHE_DURATION = 24 * 60 * 60 * 1000
 
 async function getSupabase() {
   const { supabase } = await import('@/lib/supabase')
@@ -12,15 +12,19 @@ async function getSupabase() {
 }
 
 async function fetchFromSupabase(): Promise<PortfolioData | null> {
-  const supabase = await getSupabase()
-  const { data, error } = await supabase
-    .from('portfolio_data')
-    .select('data')
-    .eq('id', 1)
-    .single()
-
-  if (error || !data) return null
-  return data.data as PortfolioData
+  const url = import.meta.env.VITE_SUPABASE_URL
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
+  try {
+    const res = await fetch(
+      `${url}/rest/v1/portfolio_data?select=data&id=eq.1`,
+      { headers: { apikey: key, Authorization: `Bearer ${key}` } }
+    )
+    if (!res.ok) return null
+    const rows = await res.json()
+    return (rows[0]?.data as PortfolioData) ?? null
+  } catch {
+    return null
+  }
 }
 
 function deepMerge(target: any, source: any): any {

@@ -16,18 +16,8 @@
     <link rel="preconnect" href="https://jlguhqycspyivbnducww.supabase.co" />
     <link rel="dns-prefetch" href="https://jlguhqycspyivbnducww.supabase.co" />
   </head>
-  <body>
-    <div id="boot-loader" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0c1014;flex-direction:column;gap:2.5rem">
-      <p style="color:#e2e8f0;font-size:1.5rem;font-weight:700;letter-spacing:.2em;font-family:system-ui,sans-serif">Ibrahim Saeed</p>
-      <div style="width:20rem;height:4px;background:#1e293b;border-radius:2px;overflow:hidden">
-        <div id="boot-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#6366f1,#06b6d4);border-radius:2px;transition:width .3s ease"></div>
-      </div>
-      <p id="boot-status" style="color:#94a3b8;font-size:.875rem;font-family:system-ui,sans-serif">Initializing...</p>
-    </div>
+  <body style="background:#0c1014">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      (function(){var p=0,s=document.getElementById('boot-bar'),t=document.getElementById('boot-status'),l=['Initializing','Loading assets','Compiling modules','Optimizing render','Almost ready'];function a(){if(p>=100)return;p+=Math.random()*8+2;if(p>100)p=100;s.style.width=p+'%';var i=Math.min(Math.floor(p/25),l.length-1);t.textContent=l[i]+'...';setTimeout(a,180+Math.random()*120)}setTimeout(a,200)})()
-    </script>
   </body>
 </html>

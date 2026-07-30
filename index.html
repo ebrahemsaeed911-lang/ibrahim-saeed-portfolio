@@ -16,16 +16,14 @@
     <link rel="preload" href="/profile-hero.webp" as="image" />
     <link rel="preload" href="/profile-about.webp" as="image" />
     <style>
-      @keyframes loader-bar{0%{width:0}50%{width:60%}to{width:95%}}
-      @keyframes loader-dot{0%,20%{content:""}25%,45%{content:"."}50%,70%{content:".."}75%,to{content:"..."}}
       .loader-bar{width:200px;height:3px;background:#1e293b;border-radius:4px;overflow:hidden;margin:16px auto 0}
-      .loader-bar-fill{height:100%;background:#3b82f6;border-radius:4px;animation:loader-bar 3s ease-in-out infinite alternate}
-      .loader-label{color:#64748b;font-size:.85rem;margin:8px 0 0;font-family:system-ui,sans-serif}
-      .loader-label::after{animation:loader-dot 2.5s steps(1) infinite;content:""}
+      .loader-bar-fill{height:100%;background:#3b82f6;border-radius:4px;width:0%}
+      .loader-pct{color:#64748b;font-size:.85rem;margin:8px 0 0;font-family:system-ui,sans-serif}
     </style>
   </head>
   <body style="background:#0c1014;margin:0">
-    <div id="root"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0c1014"><p style="color:#e2e8f0;font-size:1.5rem;font-weight:700;letter-spacing:.2em;font-family:system-ui,sans-serif;margin:0">Ibrahim Saeed</p><div class="loader-bar"><div class="loader-bar-fill"></div></div><p class="loader-label">Loading</p></div></div>
+    <div id="root"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0c1014"><p style="color:#e2e8f0;font-size:1.5rem;font-weight:700;letter-spacing:.2em;font-family:system-ui,sans-serif;margin:0">Ibrahim Saeed</p><div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div><p class="loader-pct" id="loader-pct">0%</p></div></div>
+    <script>(function(){var p=0,f=document.getElementById('loader-fill'),t=document.getElementById('loader-pct');function tick(){p+=(Math.random()*4+1)*(1-p/150);if(p>99)p=99;if(f)f.style.width=p+'%';if(t)t.textContent=Math.floor(p)+'%';if(p<99)setTimeout(tick,100+Math.random()*80)}tick()})()</script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

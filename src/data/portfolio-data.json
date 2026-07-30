@@ -3,8 +3,8 @@
     "name": "Ibrahim Saeed",
     "initials": "IS",
     "mainTitle": "Front-End Developer",
-    "profileImage": "/profile.png",
-    "aboutImage": "/profile.png",
+    "profileImage": "/profile.webp",
+    "aboutImage": "/profile.webp",
     "favicon": "",
     "faviconText": "IS"
   },
@@ -14,7 +14,7 @@
     "title": "Front-End",
     "subtitle": "Developer",
     "description": "A passionate self-taught developer learning to build clean, responsive websites and applications with React, HTML, CSS, JavaScript, and Python.",
-    "profileImage": "/profile.png",
+    "profileImage": "/profile.webp",
     "buttons": {
       "primary": { "text": "View Projects", "action": "projects" },
       "secondary": { "text": "Contact Me", "action": "contact" }
@@ -78,7 +78,7 @@
       {
         "title": "Noor Islamic Web",
         "desc": "Comprehensive Islamic app: full Quran with reciters, athkar, prayer times, tasbeeh, ruqyah, and more.",
-        "image": "/project-noor.png",
+        "image": "/project-noor.webp",
         "tags": ["JavaScript", "HTML", "CSS", "PWA"],
         "type": "Web App",
         "demo": "https://noor-islamic-web.vercel.app"
@@ -86,7 +86,7 @@
       {
         "title": "Work Time Tracker",
         "desc": "Track attendance, calculate work hours, expected salary, and deductions. Export reports to PDF and CSV.",
-        "image": "/project-wtt.png",
+        "image": "/project-wtt.webp",
         "tags": ["JavaScript", "HTML", "CSS", "PWA"],
         "type": "Web App",
         "demo": "https://work-time-tracker-ibrahim.vercel.app/",
@@ -95,7 +95,7 @@
       {
         "title": "Personal Portfolio",
         "desc": "Interactive portfolio with dark mode, glassmorphism, smooth animations, custom cursor, particles, and email integration.",
-        "image": "/project-portfolio.png",
+        "image": "/project-portfolio.webp",
         "tags": ["React", "JavaScript", "Tailwind CSS", "TypeScript"],
         "type": "Web App",
         "demo": "#home"
@@ -103,7 +103,7 @@
       {
         "title": "Weather App",
         "desc": "Desktop weather app built with Python and Tkinter. Fetches real-time temperature, humidity, wind speed, and pressure using the OpenWeatherMap API.",
-        "image": "/project-weather.png",
+        "image": "/project-weather.webp",
         "tags": ["Python", "Tkinter", "API"],
         "type": "Desktop App",
         "demo": "#",
@@ -112,7 +112,7 @@
       {
         "title": "Text Editor",
         "desc": "Multi-tab text editor built with Python and Tkinter. Features file management, keyboard shortcuts, sidebar controls, and tabbed interface.",
-        "image": "/project-text-editor.png",
+        "image": "/project-text-editor.webp",
         "tags": ["Python", "Tkinter", "GUI"],
         "type": "Desktop App",
         "demo": "#",

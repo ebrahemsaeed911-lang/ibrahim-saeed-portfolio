@@ -14,10 +14,12 @@ export default function About() {
               <div className="glass overflow-hidden rounded-[1.75rem] p-2">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem] bg-secondary">
                   <img
-                    src={data.profile.aboutImage + '?width=600'}
+                    src={data.profile.aboutImage}
                     alt={`Portrait of ${data.profile.name}`}
-                    loading="lazy"
-                    fetchPriority="low"
+                    width={480}
+                    height={600}
+                    loading="eager"
+                    fetchPriority="high"
                     decoding="async"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

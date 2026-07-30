@@ -62,8 +62,10 @@ function ProjectCard({ project: p, index: i }: { project: { title: string; image
     >
       <div className="relative aspect-[16/11] overflow-hidden bg-secondary">
         <img
-          src={p.image + '?width=600'}
+          src={p.image}
           alt={`${p.title} preview`}
+          width={600}
+          height={412}
           loading="lazy"
           fetchPriority="low"
           decoding="async"

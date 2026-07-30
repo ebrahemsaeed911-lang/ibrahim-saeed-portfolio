@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import defaultData from './portfolio-data.json'
 
 export type PortfolioData = typeof defaultData
@@ -61,8 +61,21 @@ function saveToCache(data: PortfolioData) {
 export function usePortfolioData() {
   const [data, setData] = useState<PortfolioData>(() => loadFromCache() ?? defaultData)
   const [loading, setLoading] = useState(true)
+  const initRef = useRef(data)
 
-  useEffect(() => { setLoading(false) }, [])
+  useEffect(() => {
+    setLoading(false)
+
+    fetchFromSupabase().then(remote => {
+      if (!remote) return
+
+      if (JSON.stringify(remote) !== JSON.stringify(initRef.current)) {
+        setData(remote)
+      }
+
+      saveToCache(remote)
+    })
+  }, [])
 
   const refresh = async () => {
     const remote = await fetchFromSupabase()

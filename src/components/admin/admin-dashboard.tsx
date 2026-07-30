@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { usePortfolioData, type PortfolioData } from '@/data/use-portfolio-data'
 import {
   User, Layout, Info, Code2, Briefcase, FolderGit2, Wrench, Share2, Mail, Settings,
@@ -36,8 +36,7 @@ const tabs: { id: Tab; label: string; icon: any }[] = [
 ]
 
 export default function AdminDashboard({ onLogout, onClose }: Props) {
-  const { data: initialData, save, refresh, loading } = usePortfolioData()
-  useEffect(() => { refresh() }, [])
+  const { data: initialData, save, loading } = usePortfolioData()
   const [tab, setTab] = useState<Tab>('hero')
   const [draft, setDraft] = useState<PortfolioData | null>(null)
   const [saving, setSaving] = useState(false)

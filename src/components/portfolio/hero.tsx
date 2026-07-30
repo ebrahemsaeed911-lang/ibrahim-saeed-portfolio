@@ -1,6 +1,5 @@
-import { motion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const floats = [
@@ -13,17 +12,36 @@ const floats = [
 export function Hero() {
   const { data } = usePortfolioData()
   const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  })
-  const y = useTransform(scrollYProgress, [0, 1], [0, 160])
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  const contentRef = useRef<HTMLDivElement>(null)
 
   const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
   const { hero } = data
+
+  useEffect(() => {
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = ref.current?.getBoundingClientRect()
+          if (rect) {
+            const progress = Math.min(1, Math.max(0, -rect.top / rect.height))
+            const y = progress * 160
+            const opacity = Math.max(0, 1 - progress / 0.7)
+            if (contentRef.current) {
+              contentRef.current.style.transform = `translateY(${y}px)`
+              contentRef.current.style.opacity = String(opacity)
+            }
+          }
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <section
@@ -35,72 +53,59 @@ export function Hero() {
       <div className="pointer-events-none absolute bottom-10 right-1/4 -z-10 h-[320px] w-[320px] rounded-full bg-accent/20 blur-[120px]" />
 
       {floats.map((f, i) => (
-        <motion.div
+        <div
           key={i}
           aria-hidden="true"
           className="glass absolute hidden rounded-2xl px-4 py-3 font-mono text-sm text-primary md:block"
-          style={{ top: f.top, left: f.left, right: f.right, bottom: f.bottom }}
-          animate={{ y: [0, -16, 0] }}
-          transition={{ duration: f.dur, delay: f.delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ top: f.top, left: f.left, right: f.right, bottom: f.bottom, animation: `float ${f.dur}s ease-in-out ${f.delay}s infinite` }}
         >
           {f.label}
-        </motion.div>
+        </div>
       ))}
 
-      <motion.div style={{ y, opacity }} className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-12 md:flex-row md:text-left">
+      <div ref={contentRef} className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-12 md:flex-row md:text-left">
         <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="glass mb-7 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-muted-foreground"
+          <div
+            className="glass mb-7 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-muted-foreground animate-fade-slide-up"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
             {hero.badge}
-          </motion.div>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-3 flex items-center gap-2 font-mono text-sm uppercase tracking-[0.3em] text-primary"
+          <p
+            className="mb-3 flex items-center gap-2 font-mono text-sm uppercase tracking-[0.3em] text-primary animate-fade-slide-up"
+            style={{ animationDelay: '0.1s' }}
           >
             <Sparkles size={14} /> Hi, I'm {data.profile.name}
-          </motion.p>
+          </p>
 
           <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
             {hero.title.split('').map((c, i) => (
-              <motion.span
+              <span
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.03, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block"
+                className="inline-block animate-fade-slide-up"
+                style={{ animationDelay: `${0.2 + i * 0.03}s`, animationFillMode: 'both' }}
               >
                 {c === ' ' ? '\u00A0' : c}
-              </motion.span>
+              </span>
             ))}
             <br />
             <span className="text-gradient">{hero.subtitle}</span>
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground"
+          <p
+            className="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground animate-fade-in"
+            style={{ animationDelay: '0.7s', animationFillMode: 'both' }}
           >
             {hero.description}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.85 }}
-            className="mt-9 flex flex-col items-center gap-3 sm:flex-row md:items-start"
+          <div
+            className="mt-9 flex flex-col items-center gap-3 sm:flex-row md:items-start animate-fade-slide-up"
+            style={{ animationDelay: '0.85s', animationFillMode: 'both' }}
           >
             <button
               onClick={() => go(hero.buttons.primary.action)}
@@ -115,14 +120,12 @@ export function Hero() {
             >
               {hero.buttons.secondary.text}
             </button>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="relative shrink-0"
+        <div
+          className="relative shrink-0 animate-fade-scale-in"
+          style={{ animationDelay: '0.5s', animationFillMode: 'both' }}
         >
           <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/40 to-accent/40 blur-3xl" />
           <div className="relative h-64 w-64 overflow-hidden rounded-full border-2 border-border bg-secondary sm:h-72 sm:w-72 md:h-80 md:w-80">
@@ -135,25 +138,19 @@ export function Hero() {
               className="h-full w-full object-cover"
             />
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      <motion.button
+      <button
         onClick={() => go('about')}
         aria-label="Scroll to about"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-fade-in"
+        style={{ animationDelay: '1.2s', animationFillMode: 'both' }}
       >
-        <motion.span
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity }}
-          className="block"
-        >
+        <span className="block animate-bounce-arrow" style={{ animationDuration: '1.6s' }}>
           <ArrowDown size={22} />
-        </motion.span>
-      </motion.button>
+        </span>
+      </button>
     </section>
   )
 }

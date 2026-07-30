@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { Menu, X } from 'lucide-react'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
@@ -12,15 +11,9 @@ export function Navbar() {
   const [active, setActive] = useState('home')
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [progress, setProgress] = useState(0)
   const clickCount = useRef(0)
   const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    restDelta: 0.001,
-  })
 
   function handleLogoClicks() {
     clickCount.current++
@@ -34,7 +27,19 @@ export function Navbar() {
   }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight
+          setProgress(docHeight > 0 ? scrollTop / docHeight : 0)
+          setScrolled(scrollTop > 24)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
 
@@ -64,11 +69,8 @@ export function Navbar() {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+      <header
+        className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 animate-slide-down"
       >
         <nav
           className={`flex w-full max-w-5xl items-center justify-between rounded-full px-3 py-2.5 transition-all duration-300 md:px-5 ${
@@ -93,11 +95,7 @@ export function Navbar() {
                   className="relative rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {active === l.id && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 -z-10 rounded-full bg-secondary"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
+                    <span className="absolute inset-0 -z-10 rounded-full bg-secondary" />
                   )}
                   <span className={active === l.id ? 'text-foreground' : undefined}>
                     {l.label}
@@ -123,38 +121,31 @@ export function Navbar() {
             </button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
-      <motion.div
-        style={{ scaleX }}
+      <div
         className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gradient-to-r from-primary to-accent"
+        style={{ transform: `scaleX(${progress})` }}
       />
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-4 bg-background/95 backdrop-blur-xl md:hidden"
-          >
-            {nav.links.map((l, i) => (
-              <motion.button
-                key={l.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={() => go(l.id)}
-                className={`text-2xl font-medium ${
-                  active === l.id ? 'text-gradient' : 'text-muted-foreground'
-                }`}
-              >
-                {l.label}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <div
+          className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-4 bg-background/95 backdrop-blur-xl md:hidden animate-fade-in"
+        >
+          {nav.links.map((l, i) => (
+            <button
+              key={l.id}
+              onClick={() => go(l.id)}
+              className={`text-2xl font-medium animate-fade-slide-up ${
+                active === l.id ? 'text-gradient' : 'text-muted-foreground'
+              }`}
+              style={{ animationDelay: `${i * 0.05}s`, animationFillMode: 'both' }}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {showAdmin && (
         <Suspense fallback={null}>

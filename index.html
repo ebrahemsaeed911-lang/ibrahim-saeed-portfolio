@@ -13,11 +13,12 @@
     <meta name="twitter:card" content="summary" />
     <title>Ibrahim Saeed — Front-End Developer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230c1014'/><text x='16' y='22' text-anchor='middle' font-family='system-ui,sans-serif' font-size='14' font-weight='700' fill='%23e2e8f0'>IS</text></svg>" />
+    <link rel="preload" href="/profile-hero.webp" as="image" />
     <style>
-      @keyframes loader-bar{0%{width:0}70%{width:85%}to{width:100%}}
+      @keyframes loader-bar{0%{width:0}50%{width:60%}to{width:95%}}
       @keyframes loader-dot{0%,20%{content:""}25%,45%{content:"."}50%,70%{content:".."}75%,to{content:"..."}}
       .loader-bar{width:200px;height:3px;background:#1e293b;border-radius:4px;overflow:hidden;margin:16px auto 0}
-      .loader-bar-fill{height:100%;background:#3b82f6;border-radius:4px;animation:loader-bar 2s ease-out forwards}
+      .loader-bar-fill{height:100%;background:#3b82f6;border-radius:4px;animation:loader-bar 3s ease-in-out infinite alternate}
       .loader-label{color:#64748b;font-size:.85rem;margin:8px 0 0;font-family:system-ui,sans-serif}
       .loader-label::after{animation:loader-dot 2.5s steps(1) infinite;content:""}
     </style>

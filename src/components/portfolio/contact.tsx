@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'motion/react'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { Reveal } from './reveal'
 import { FacebookIcon, GithubIcon, LinkedinIcon } from './brand-icons'
@@ -127,36 +126,27 @@ export default function Contact() {
               </label>
 
               {status === 'sent' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm text-emerald-400"
-                >
+                <div className="flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm text-emerald-400 animate-fade-slide-up">
                   <CheckCircle size={16} />
                   Message sent successfully! I'll get back to you soon.
-                </motion.div>
+                </div>
               )}
 
               {status === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 rounded-xl bg-red-500/15 px-4 py-3 text-sm text-red-400"
-                >
+                <div className="flex items-center gap-2 rounded-xl bg-red-500/15 px-4 py-3 text-sm text-red-400 animate-fade-slide-up">
                   <AlertCircle size={16} />
                   Something went wrong. Please try again or email me directly.
-                </motion.div>
+                </div>
               )}
 
-              <motion.button
+              <button
                 type="submit"
                 disabled={status === 'sending'}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {status === 'sending' ? 'Sending...' : 'Send Message'}
                 <Send size={16} />
-              </motion.button>
+              </button>
             </form>
           </div>
         </Reveal>

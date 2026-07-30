@@ -1,19 +1,17 @@
-import { motion, useInView } from 'motion/react'
-import { useRef } from 'react'
 import { Reveal } from './reveal'
 import { usePortfolioData } from '@/data/use-portfolio-data'
+import { useInView } from '@/hooks/use-in-view'
 
 function SkillCard({ skill, index }: { skill: { name: string; level: number; desc: string; icon: string }; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const { ref, inView } = useInView({ rootMargin: '-60px' })
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
-      className="glass group relative overflow-hidden rounded-3xl p-7 transition-colors hover:border-primary/40"
+      className={`glass group relative overflow-hidden rounded-3xl p-7 transition-all duration-500 hover:border-primary/40 ${
+        inView ? 'animate-fade-slide-up' : 'translate-y-8 opacity-0'
+      }`}
+      style={{ animationDelay: `${index * 0.08}s`, animationFillMode: 'both' }}
     >
       <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-primary/10 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
 
@@ -28,14 +26,12 @@ function SkillCard({ skill, index }: { skill: { name: string; level: number; des
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{skill.desc}</p>
 
       <div className="mt-6 h-2 overflow-hidden rounded-full bg-secondary">
-        <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${skill.level}%` } : {}}
-          transition={{ duration: 1.1, delay: 0.3 + index * 0.08, ease: 'easeOut' }}
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-[1.1s] ease-out"
+          style={{ width: inView ? `${skill.level}%` : '0%', transitionDelay: `${0.3 + index * 0.08}s` }}
         />
       </div>
-    </motion.div>
+    </div>
   )
 }
 

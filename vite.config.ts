@@ -1,22 +1,10 @@
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
-function modulePreloadPlugin(): Plugin {
-  return {
-    name: 'module-preload',
-    transformIndexHtml(_, ctx) {
-      if (!ctx.bundle) return
-      const entry = Object.values(ctx.bundle).find((c) => 'isEntry' in c && c.isEntry)
-      if (!entry) return
-      return [{ tag: 'link', attrs: { rel: 'modulepreload', href: '/' + entry.fileName }, injectTo: 'head' }]
-    },
-  }
-}
-
 export default defineConfig({
-  plugins: [react(), tailwindcss(), modulePreloadPlugin()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -30,9 +18,17 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-icons': ['lucide-react'],
+        manualChunks(id: string) {
+          if (
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/react-dom/') ||
+            id.includes('node_modules/scheduler/')
+          ) {
+            return 'vendor-react'
+          }
+          if (id.includes('node_modules/lucide-react/')) {
+            return 'vendor-icons'
+          }
         },
       },
     },

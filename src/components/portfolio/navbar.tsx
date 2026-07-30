@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { Menu, X } from 'lucide-react'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const AdminOverlay = lazy(() => import('@/components/admin/admin-overlay'))
@@ -117,7 +116,18 @@ export function Navbar() {
               aria-label="Toggle menu"
               className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-foreground md:hidden"
             >
-              {open ? <X size={18} /> : <Menu size={18} />}
+              {open ? (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 6 6 18" />
+    <path d="m6 6 12 12" />
+  </svg>
+) : (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 5h16" />
+    <path d="M4 12h16" />
+    <path d="M4 19h16" />
+  </svg>
+)}
             </button>
           </div>
         </nav>

@@ -1,9 +1,10 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { CustomCursor } from '@/components/portfolio/custom-cursor'
-import { Particles } from '@/components/portfolio/particles'
 import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
 import { usePortfolioData } from '@/data/use-portfolio-data'
+
+const CustomCursor = lazy(() => import('@/components/portfolio/custom-cursor').then(m => ({ default: m.CustomCursor })))
+const Particles = lazy(() => import('@/components/portfolio/particles').then(m => ({ default: m.Particles })))
 
 const aboutImp = import('@/components/portfolio/about')
 const skillsImp = import('@/components/portfolio/skills')
@@ -33,12 +34,21 @@ export default function App() {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#0c1014"/><text x="16" y="22" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#e2e8f0">${txt}</text></svg>`
       link.href = data.profile.favicon || 'data:image/svg+xml,' + encodeURIComponent(svg)
     }
+
+    requestAnimationFrame(() => {
+      const el = document.getElementById('boot-loader')
+      if (el) {
+        el.style.transition = 'opacity 0.4s ease'
+        el.style.opacity = '0'
+        setTimeout(() => el.remove(), 500)
+      }
+    })
   }, [data.profile.name, data.profile.mainTitle, data.profile.favicon, data.profile.faviconText])
 
   return (
     <>
-      <CustomCursor />
-      <Particles />
+      <Suspense fallback={null}><CustomCursor /></Suspense>
+      <Suspense fallback={null}><Particles /></Suspense>
       <Navbar />
       <main className="relative">
         <Hero />

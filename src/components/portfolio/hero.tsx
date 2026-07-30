@@ -1,4 +1,3 @@
-import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
@@ -79,7 +78,12 @@ export function Hero() {
             className="mb-3 flex items-center gap-2 font-mono text-sm uppercase tracking-[0.3em] text-primary animate-fade-slide-up"
             style={{ animationDelay: '0.1s' }}
           >
-            <Sparkles size={14} /> Hi, I'm {data.profile.name}
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
+              <path d="M20 2v4" />
+              <path d="M22 4h-4" />
+              <circle cx="4" cy="20" r="2" />
+            </svg> Hi, I'm {data.profile.name}
           </p>
 
           <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
@@ -112,7 +116,10 @@ export function Hero() {
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-105"
             >
               {hero.buttons.primary.text}
-              <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg>
             </button>
             <button
               onClick={() => go(hero.buttons.secondary.action)}
@@ -148,7 +155,10 @@ export function Hero() {
         style={{ animationDelay: '1.2s', animationFillMode: 'both' }}
       >
         <span className="block animate-bounce-arrow" style={{ animationDuration: '1.6s' }}>
-          <ArrowDown size={22} />
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v14" />
+            <path d="m19 12-7 7-7-7" />
+          </svg>
         </span>
       </button>
     </section>

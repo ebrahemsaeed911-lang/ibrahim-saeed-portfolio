@@ -1,17 +1,11 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Navbar } from '@/components/portfolio/navbar'
 import { Hero } from '@/components/portfolio/hero'
-import About from '@/components/portfolio/about'
-import Skills from '@/components/portfolio/skills'
-import Experience from '@/components/portfolio/experience'
-import Projects from '@/components/portfolio/projects'
-import Services from '@/components/portfolio/services'
-import Contact from '@/components/portfolio/contact'
-import Footer from '@/components/portfolio/footer'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const CustomCursor = lazy(() => import('@/components/portfolio/custom-cursor').then(m => ({ default: m.CustomCursor })))
 const Particles = lazy(() => import('@/components/portfolio/particles').then(m => ({ default: m.Particles })))
+const SectionsLazy = lazy(() => import('@/components/portfolio/sections-lazy'))
 
 export default function App() {
   const { data } = usePortfolioData()
@@ -26,6 +20,7 @@ export default function App() {
       link.href = data.profile.favicon || 'data:image/svg+xml,' + encodeURIComponent(svg)
     }
 
+    import('@/components/portfolio/sections-lazy')
   }, [data.profile.name, data.profile.mainTitle, data.profile.favicon, data.profile.faviconText])
 
   return (
@@ -35,14 +30,10 @@ export default function App() {
       <Navbar />
       <main className="relative">
         <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Services />
-        <Contact />
+        <Suspense fallback={null}>
+          <SectionsLazy />
+        </Suspense>
       </main>
-      <Footer />
     </>
   )
 }

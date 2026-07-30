@@ -8,6 +8,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+      'react-dom/client': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
+      'react/jsx-dev-runtime': 'preact/jsx-runtime',
     },
   },
   server: {
@@ -19,11 +24,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (
-            id.includes('node_modules/react/') ||
-            id.includes('node_modules/react-dom/') ||
-            id.includes('node_modules/scheduler/')
-          ) {
+          if (id.includes('node_modules/preact/')) {
             return 'vendor-react'
           }
           if (id.includes('node_modules/lucide-react/')) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Mail, Lock } from 'lucide-react'
+import { Mail, Lock, User, ShieldCheck } from 'lucide-react'
 
 export default function DashboardAccount() {
   const [currentEmail, setCurrentEmail] = useState('')
@@ -22,7 +22,7 @@ export default function DashboardAccount() {
     const { error: err } = await supabase.auth.updateUser({ email: newEmail })
     if (err) setError(err.message)
     else {
-      setMessage('Confirmation sent to new email!')
+      setMessage('Confirmation sent to your new email!')
       setNewEmail('')
     }
   }
@@ -34,56 +34,77 @@ export default function DashboardAccount() {
     const { error: err } = await supabase.auth.updateUser({ password })
     if (err) setError(err.message)
     else {
-      setMessage('Password updated!')
+      setMessage('Password updated successfully!')
       setPassword('')
     }
   }
 
   return (
-    <div className="flex flex-col gap-5">
-      <h2 className="text-xl font-semibold">Account Settings</h2>
+    <div className="flex flex-col gap-6">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+            <User size={20} />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Account Settings</h2>
+            <p className="text-sm text-muted-foreground">Manage your login credentials and security.</p>
+          </div>
+        </div>
+      </div>
 
       {currentEmail && (
-        <div className="glass rounded-2xl p-5">
-          <p className="mb-1 text-xs text-muted-foreground">Current email</p>
-          <div className="flex items-center gap-2 text-sm">
-            <Mail size={14} className="text-primary" />
-            <span className="font-medium text-foreground">{currentEmail}</span>
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <ShieldCheck size={16} />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">Current email</p>
+              <p className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <Mail size={14} className="text-primary" />
+                {currentEmail}
+              </p>
+            </div>
           </div>
         </div>
       )}
 
       {message && (
-        <p className="rounded-xl bg-emerald-500/15 px-4 py-3 text-sm text-emerald-400">{message}</p>
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
+          <p className="text-sm text-emerald-400">{message}</p>
+        </div>
       )}
       {error && (
-        <p className="rounded-xl bg-red-500/15 px-4 py-3 text-sm text-red-400">{error}</p>
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-4">
+          <p className="text-sm text-red-400">{error}</p>
+        </div>
       )}
 
-      <form onSubmit={handleUpdateEmail} className="glass rounded-2xl p-5">
-        <p className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
-          <Mail size={14} className="text-primary" /> Change email
-        </p>
-        <div className="flex gap-3">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="mb-5 flex items-center gap-2 text-sm font-medium text-foreground">
+          <Mail size={15} className="text-primary" /> Change email
+        </h3>
+        <form onSubmit={handleUpdateEmail} className="flex gap-3">
           <input
             type="email"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
             placeholder="New email address"
             required
-            className="flex-1 rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none focus:border-primary/60"
+            className="flex-1 rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60"
           />
-          <button type="submit" className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-primary-foreground">
+          <button type="submit" className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90">
             Update
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
 
-      <form onSubmit={handleUpdatePassword} className="glass rounded-2xl p-5">
-        <p className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
-          <Lock size={14} className="text-primary" /> Change password
-        </p>
-        <div className="flex gap-3">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="mb-5 flex items-center gap-2 text-sm font-medium text-foreground">
+          <Lock size={15} className="text-primary" /> Change password
+        </h3>
+        <form onSubmit={handleUpdatePassword} className="flex gap-3">
           <input
             type="password"
             value={password}
@@ -91,13 +112,13 @@ export default function DashboardAccount() {
             placeholder="New password (min 6 chars)"
             required
             minLength={6}
-            className="flex-1 rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none focus:border-primary/60"
+            className="flex-1 rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60"
           />
-          <button type="submit" className="rounded-xl bg-primary px-5 py-3 text-sm font-medium text-primary-foreground">
+          <button type="submit" className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90">
             Update
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

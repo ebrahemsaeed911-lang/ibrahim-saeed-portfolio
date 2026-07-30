@@ -1,9 +1,21 @@
 import { useEffect, useRef } from 'react'
 import type { PortfolioData } from '@/data/use-portfolio-data'
+import { Code2, Type, Plus, Percent, Trash2 } from 'lucide-react'
 
 interface Props {
   data: PortfolioData
   onChange: (data: PortfolioData) => void
+}
+
+function Field({ icon: Icon, label, children }: { icon: any; label: string; children: React.ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+        <Icon size={13} /> {label}
+      </span>
+      {children}
+    </label>
+  )
 }
 
 export default function DashboardSkills({ data, onChange }: Props) {
@@ -19,9 +31,9 @@ export default function DashboardSkills({ data, onChange }: Props) {
     prevCount.current = s.items.length
   }, [s.items.length])
 
-  function updateItem(index: number, field: string, val: string | number) {
+  function updateItem(index: number, field: string, val: string) {
     const items = [...s.items]
-    items[index] = { ...items[index], [field]: val }
+    items[index] = { ...items[index], [field]: field === 'level' ? Number(val) : val }
     onChange({ ...data, skills: { ...s, items } })
   }
 
@@ -30,50 +42,58 @@ export default function DashboardSkills({ data, onChange }: Props) {
   }
 
   function addItem() {
-    onChange({ ...data, skills: { ...s, items: [...s.items, { name: '', level: 50, desc: '', icon: '⚛' }] } })
-  }
-
-  function moveItem(index: number, direction: -1 | 1) {
-    const items = [...s.items]
-    const target = index + direction
-    if (target < 0 || target >= items.length) return
-    ;[items[index], items[target]] = [items[target], items[index]]
-    onChange({ ...data, skills: { ...s, items } })
+    onChange({ ...data, skills: { ...s, items: [...s.items, { name: '', level: 80, desc: '', icon: '' }] } })
   }
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Skills</h2>
-        <button onClick={addItem} className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:scale-105 transition-transform">+ Add Skill</button>
+    <div className="flex flex-col gap-6">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+              <Code2 size={20} />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">Skills</h2>
+              <p className="text-sm text-muted-foreground">Showcase your technical skills and proficiency.</p>
+            </div>
+          </div>
+          <button onClick={addItem} className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:opacity-90">
+            <Plus size={15} /> Add Skill
+          </button>
+        </div>
       </div>
 
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted-foreground">Section title</span>
-        <input value={s.sectionTitle} onChange={(e) => onChange({ ...data, skills: { ...s, sectionTitle: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-foreground outline-none focus:border-primary/60" />
-      </label>
+      <Field icon={Type} label="Section title">
+        <input value={s.sectionTitle} onChange={(e) => onChange({ ...data, skills: { ...s, sectionTitle: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+      </Field>
 
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted-foreground">Heading</span>
-        <input value={s.heading} onChange={(e) => onChange({ ...data, skills: { ...s, heading: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-foreground outline-none focus:border-primary/60" />
-      </label>
+      <Field icon={Type} label="Heading">
+        <input value={s.heading} onChange={(e) => onChange({ ...data, skills: { ...s, heading: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+      </Field>
 
-      <div ref={itemsRef} className="flex flex-col gap-4">
+      <div ref={itemsRef} className="flex flex-col gap-3">
         {s.items.map((skill, i) => (
-          <div key={i} className="glass rounded-2xl p-5">
+          <div key={i} className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/30">
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-sm font-medium">{skill.name || `Skill ${i + 1}`}</span>
-              <div className="flex gap-2">
-                <button onClick={() => moveItem(i, -1)} disabled={i === 0} className="text-xs text-muted-foreground disabled:opacity-30">↑</button>
-                <button onClick={() => moveItem(i, 1)} disabled={i === s.items.length - 1} className="text-xs text-muted-foreground disabled:opacity-30">↓</button>
-                <button onClick={() => removeItem(i)} className="text-xs text-red-400">✕</button>
+              <span className="text-sm font-medium text-foreground">{skill.name || `Skill ${i + 1}`}</span>
+              <button onClick={() => removeItem(i)} className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300">
+                <Trash2 size={12} /> Remove
+              </button>
+            </div>
+            <div className="flex items-end gap-4">
+              <div className="flex-1">
+                <input value={skill.name} onChange={(e) => updateItem(i, 'name', e.target.value)} placeholder="Skill name" className="w-full rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+              </div>
+              <div className="w-32">
+                <div className="flex items-center gap-2">
+                  <Percent size={13} className="text-muted-foreground" />
+                  <input type="number" min={0} max={100} value={skill.level} onChange={(e) => updateItem(i, 'level', e.target.value)} className="w-16 rounded-xl border border-border bg-background/40 px-3 py-2.5 text-center text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <input value={skill.name} onChange={(e) => updateItem(i, 'name', e.target.value)} placeholder="Name" className="rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
-              <input value={skill.icon} onChange={(e) => updateItem(i, 'icon', e.target.value)} placeholder="Icon" className="rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
-              <input type="number" min={0} max={100} value={skill.level} onChange={(e) => updateItem(i, 'level', Number(e.target.value))} placeholder="Level %" className="rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
-              <input value={skill.desc} onChange={(e) => updateItem(i, 'desc', e.target.value)} placeholder="Description" className="rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${skill.level}%` }} />
             </div>
           </div>
         ))}

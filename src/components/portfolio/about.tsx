@@ -14,7 +14,7 @@ export default function About() {
             <div className="glass overflow-hidden rounded-[1.75rem] p-2">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem]">
                 <img
-                  src={data.profile.aboutImage}
+                  src={data.profile.aboutImage + '?width=600'}
                   alt={`Portrait of ${data.profile.name}`}
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

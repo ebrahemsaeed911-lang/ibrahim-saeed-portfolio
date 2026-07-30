@@ -51,7 +51,7 @@ export default function Projects() {
             >
               <div className="relative aspect-[16/11] overflow-hidden">
                 <img
-                  src={p.image}
+                  src={p.image + '?width=600'}
                   alt={`${p.title} preview`}
                   loading="lazy"
                   className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"

@@ -7,6 +7,23 @@ interface Props {
   onChange: (url: string) => void
 }
 
+function compress(file: File, maxW: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      const w = Math.min(img.width, maxW)
+      const h = (img.height / img.width) * w
+      const c = document.createElement('canvas')
+      c.width = w; c.height = h
+      const ctx = c.getContext('2d')!
+      ctx.drawImage(img, 0, 0, w, h)
+      c.toBlob(b => b ? resolve(b) : reject(new Error('compress failed')), 'image/webp', 0.8)
+    }
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
+}
+
 export default function ImageUploader({ label, value, onChange }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
@@ -16,12 +33,12 @@ export default function ImageUploader({ label, value, onChange }: Props) {
     if (!file) return
 
     setUploading(true)
-    const ext = file.name.split('.').pop()
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    const compressed = await compress(file, 1200)
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`
 
     const { data, error } = await supabase.storage
       .from('portfolio-images')
-      .upload(path, file, { upsert: true })
+      .upload(path, compressed, { upsert: true, contentType: 'image/webp' })
 
     if (error) {
       console.error('Upload failed:', error.message)

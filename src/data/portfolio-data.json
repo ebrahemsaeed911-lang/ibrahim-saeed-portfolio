@@ -3,8 +3,8 @@
     "name": "Ibrahim Saeed",
     "initials": "IS",
     "mainTitle": "Front-End Developer",
-    "profileImage": "/profile.webp",
-    "aboutImage": "/profile.webp",
+    "profileImage": "/profile-hero.webp",
+    "aboutImage": "/profile-about.webp",
     "favicon": "",
     "faviconText": "IS"
   },
@@ -14,7 +14,7 @@
     "title": "Front-End",
     "subtitle": "Developer",
     "description": "A passionate self-taught developer learning to build clean, responsive websites and applications with React, HTML, CSS, JavaScript, and Python.",
-    "profileImage": "/profile.webp",
+    "profileImage": "/profile-hero.webp",
     "buttons": {
       "primary": { "text": "View Projects", "action": "projects" },
       "secondary": { "text": "Contact Me", "action": "contact" }

@@ -2,7 +2,7 @@ import { Reveal } from './reveal'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 import { useInView } from '@/hooks/use-in-view'
 
-function SkillCard({ skill, index }: { skill: { name: string; level: number; desc: string; icon: string }; index: number }) {
+function SkillCard({ skill, index }: { skill: { name: string; level: number; desc: string; icon: string; learning?: boolean }; index: number }) {
   const { ref, inView } = useInView({ rootMargin: '-60px' })
 
   return (
@@ -25,9 +25,16 @@ function SkillCard({ skill, index }: { skill: { name: string; level: number; des
       <h3 className="mt-5 text-xl font-semibold">{skill.name}</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{skill.desc}</p>
 
+      {skill.learning && (
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+          Currently Learning
+        </span>
+      )}
+
       <div className="mt-6 h-2 overflow-hidden rounded-full bg-secondary">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-[1.1s] ease-out"
+          className={`h-full rounded-full transition-all duration-[1.1s] ease-out ${skill.learning ? 'bg-accent/70' : 'bg-gradient-to-r from-primary to-accent'}`}
           style={{ width: inView ? `${skill.level}%` : '0%', transitionDelay: `${0.3 + index * 0.08}s` }}
         />
       </div>
@@ -38,6 +45,8 @@ function SkillCard({ skill, index }: { skill: { name: string; level: number; des
 export default function Skills() {
   const { data } = usePortfolioData()
   const { skills } = data
+  const mastered = skills.items.filter((s) => !s.learning)
+  const learning = skills.items.filter((s) => s.learning)
 
   return (
     <section id="skills" className="relative px-6 py-28 md:py-36">
@@ -52,10 +61,26 @@ export default function Skills() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {skills.items.map((skill, i) => (
+          {mastered.map((skill, i) => (
             <SkillCard key={skill.name} skill={skill} index={i} />
           ))}
         </div>
+
+        {learning.length > 0 && (
+          <div className="mt-20">
+            <Reveal>
+              <h3 className="mb-8 flex items-center gap-3 text-xl font-semibold tracking-tight sm:text-2xl">
+                <span className="h-2 w-2 rounded-full bg-accent" />
+                {skills.learningHeading || 'Currently Learning'}
+              </h3>
+            </Reveal>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {learning.map((skill, i) => (
+                <SkillCard key={skill.name} skill={skill} index={i} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -36,6 +36,7 @@
   "skills": {
     "sectionTitle": "Skills",
     "heading": "Technologies I work with",
+    "learningHeading": "Currently Learning",
     "items": [
       { "name": "HTML5", "level": 95, "desc": "Semantic markup, accessible structure, SEO-friendly.", "icon": "</>" },
       { "name": "CSS3", "level": 90, "desc": "Responsive layouts, flexbox/grid, animations, design systems.", "icon": "{ }" },
@@ -43,7 +44,11 @@
       { "name": "TypeScript", "level": 75, "desc": "Static typing, interfaces, generics, type-safe code.", "icon": "TS" },
       { "name": "Python", "level": 80, "desc": "Scripting, automation, data processing, backend logic.", "icon": "PY" },
       { "name": "React", "level": 75, "desc": "Component architecture, JSX, hooks, state management, SPA development.", "icon": "⚛" },
-      { "name": "Git & GitHub", "level": 85, "desc": "Version control, branching, collaboration, CI workflows.", "icon": "GIT" }
+      { "name": "Git & GitHub", "level": 85, "desc": "Version control, branching, collaboration, CI workflows.", "icon": "GIT" },
+      { "name": "SQL", "level": 25, "desc": "Queries, joins, and database fundamentals. Still learning.", "icon": "SQL", "learning": true },
+      { "name": "Node.js", "level": 20, "desc": "JavaScript runtime for building backend services. Still learning.", "icon": "NODE", "learning": true },
+      { "name": "Express.js", "level": 20, "desc": "Web framework for building APIs and servers. Still learning.", "icon": "EX", "learning": true },
+      { "name": "Tailwind CSS", "level": 30, "desc": "Utility-first CSS framework for rapid styling. Still learning.", "icon": "TW", "learning": true }
     ]
   },
   "experience": {

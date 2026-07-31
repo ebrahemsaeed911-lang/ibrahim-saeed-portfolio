@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { PortfolioData } from '@/data/use-portfolio-data'
-import { Code2, Type, Plus, Percent, Trash2 } from 'lucide-react'
+import { Code2, Type, Plus, Percent, Trash2, GraduationCap } from 'lucide-react'
 
 interface Props {
   data: PortfolioData
@@ -31,7 +31,7 @@ export default function DashboardSkills({ data, onChange }: Props) {
     prevCount.current = s.items.length
   }, [s.items.length])
 
-  function updateItem(index: number, field: string, val: string) {
+  function updateItem(index: number, field: string, val: string | boolean) {
     const items = [...s.items]
     items[index] = { ...items[index], [field]: field === 'level' ? Number(val) : val }
     onChange({ ...data, skills: { ...s, items } })
@@ -42,7 +42,7 @@ export default function DashboardSkills({ data, onChange }: Props) {
   }
 
   function addItem() {
-    onChange({ ...data, skills: { ...s, items: [...s.items, { name: '', level: 80, desc: '', icon: '' }] } })
+    onChange({ ...data, skills: { ...s, items: [...s.items, { name: '', level: 80, desc: '', icon: '', learning: false }] } })
   }
 
   return (
@@ -72,11 +72,22 @@ export default function DashboardSkills({ data, onChange }: Props) {
         <input value={s.heading} onChange={(e) => onChange({ ...data, skills: { ...s, heading: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
       </Field>
 
+      <Field icon={GraduationCap} label="Currently Learning heading">
+        <input value={s.learningHeading || ''} onChange={(e) => onChange({ ...data, skills: { ...s, learningHeading: e.target.value } })} className="rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+      </Field>
+
+      <div className="rounded-xl border border-border bg-card/50 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+        Skills marked as <span className="font-medium text-primary">Currently Learning</span> appear in a separate sub-section, so low percentages don't weaken your main skills.
+      </div>
+
       <div ref={itemsRef} className="flex flex-col gap-3">
         {s.items.map((skill, i) => (
-          <div key={i} className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/30">
+          <div key={i} className={`rounded-2xl border p-5 transition-colors hover:border-primary/30 ${skill.learning ? 'border-accent/40 bg-accent/5' : 'border-border bg-card'}`}>
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-sm font-medium text-foreground">{skill.name || `Skill ${i + 1}`}</span>
+              <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                {skill.name || `Skill ${i + 1}`}
+                {skill.learning && <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-medium text-accent">Learning</span>}
+              </span>
               <button onClick={() => removeItem(i)} className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300">
                 <Trash2 size={12} /> Remove
               </button>
@@ -92,8 +103,17 @@ export default function DashboardSkills({ data, onChange }: Props) {
                 </div>
               </div>
             </div>
+            <label className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={!!skill.learning}
+                onChange={(e) => updateItem(i, 'learning', e.target.checked)}
+                className="h-4 w-4 rounded border-border accent-accent"
+              />
+              Currently Learning
+            </label>
             <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all" style={{ width: `${skill.level}%` }} />
+              <div className={`h-full rounded-full transition-all ${skill.learning ? 'bg-accent/70' : 'bg-gradient-to-r from-primary to-accent'}`} style={{ width: `${skill.level}%` }} />
             </div>
           </div>
         ))}

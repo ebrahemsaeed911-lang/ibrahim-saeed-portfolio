@@ -103,6 +103,14 @@ export default function DashboardSkills({ data, onChange }: Props) {
                 </div>
               </div>
             </div>
+            <div className="mt-3 flex items-end gap-4">
+              <div className="w-24">
+                <input value={skill.icon || ''} onChange={(e) => updateItem(i, 'icon', e.target.value)} placeholder="Icon" className="w-full rounded-xl border border-border bg-background/40 px-3 py-2.5 text-center text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+              </div>
+              <div className="flex-1">
+                <input value={skill.desc || ''} onChange={(e) => updateItem(i, 'desc', e.target.value)} placeholder="Short description" className="w-full rounded-xl border border-border bg-background/40 px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary/60 focus:bg-background/60" />
+              </div>
+            </div>
             <label className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
               <input
                 type="checkbox"

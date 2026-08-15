@@ -48,32 +48,42 @@ function compress(file: File, maxW: number): Promise<Compressed> {
 export default function ImageUploader({ label, value, onChange }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
 
     setUploading(true)
-    const { blob, type } = await compress(file, 1200)
-    const ext = type === 'image/jpeg' ? 'jpg' : type.split('/')[1] || 'png'
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    setError('')
 
-    const { data, error } = await supabase.storage
-      .from('portfolio-images')
-      .upload(path, blob, { upsert: true, contentType: type })
+    try {
+      const { blob, type } = await compress(file, 1200)
+      const ext = type === 'image/jpeg' ? 'jpg' : type.split('/')[1] || 'png'
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-    if (error) {
-      console.error('Upload failed:', error.message)
+      const { data, error } = await supabase.storage
+        .from('portfolio-images')
+        .upload(path, blob, { upsert: true, contentType: type })
+
+      if (error) {
+        setError(error.message)
+        console.error('Upload failed:', error.message)
+        setUploading(false)
+        return
+      }
+
+      const { data: publicUrl } = supabase.storage
+        .from('portfolio-images')
+        .getPublicUrl(data.path)
+
+      onChange(publicUrl.publicUrl)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Image processing failed')
+      console.error('Upload error:', err)
+    } finally {
       setUploading(false)
-      return
     }
-
-    const { data: publicUrl } = supabase.storage
-      .from('portfolio-images')
-      .getPublicUrl(data.path)
-
-    onChange(publicUrl.publicUrl)
-    setUploading(false)
   }
 
   return (
@@ -105,6 +115,10 @@ export default function ImageUploader({ label, value, onChange }: Props) {
         className="hidden"
         onChange={handleFile}
       />
+
+      {error && (
+        <p className="text-xs text-red-400">{error}</p>
+      )}
 
       {value && (
         <img

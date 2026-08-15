@@ -7,19 +7,40 @@ interface Props {
   onChange: (url: string) => void
 }
 
-function compress(file: File, maxW: number): Promise<Blob> {
+interface Compressed { blob: Blob; type: string }
+
+function compress(file: File, maxW: number): Promise<Compressed> {
   return new Promise((resolve, reject) => {
     const img = new Image()
-    img.onload = () => {
-      const w = Math.min(img.width, maxW)
-      const h = (img.height / img.width) * w
+    img.decoding = 'async'
+
+    const draw = (source: CanvasImageSource) => {
+      const w = Math.min(img.naturalWidth, maxW)
+      const h = (img.naturalHeight / img.naturalWidth) * w
       const c = document.createElement('canvas')
-      c.width = w; c.height = h
+      c.width = Math.max(1, Math.round(w))
+      c.height = Math.max(1, Math.round(h))
       const ctx = c.getContext('2d')!
-      ctx.drawImage(img, 0, 0, w, h)
-      c.toBlob(b => b ? resolve(b) : reject(new Error('compress failed')), 'image/webp', 0.8)
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
+      ctx.drawImage(source, 0, 0, c.width, c.height)
+      c.toBlob(
+        b => b ? resolve({ blob: b, type: b.type || 'image/webp' }) : reject(new Error('compress failed')),
+        'image/webp',
+        0.85,
+      )
     }
-    img.onerror = reject
+
+    img.onload = () => {
+      if (typeof createImageBitmap === 'function') {
+        createImageBitmap(img, { imageOrientation: 'from-image' })
+          .then(bitmap => { draw(bitmap); bitmap.close() })
+          .catch(() => draw(img))
+      } else {
+        draw(img)
+      }
+    }
+    img.onerror = () => reject(new Error('image load failed'))
     img.src = URL.createObjectURL(file)
   })
 }
@@ -33,12 +54,13 @@ export default function ImageUploader({ label, value, onChange }: Props) {
     if (!file) return
 
     setUploading(true)
-    const compressed = await compress(file, 1200)
-    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`
+    const { blob, type } = await compress(file, 1200)
+    const ext = type === 'image/jpeg' ? 'jpg' : type.split('/')[1] || 'png'
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const { data, error } = await supabase.storage
       .from('portfolio-images')
-      .upload(path, compressed, { upsert: true, contentType: 'image/webp' })
+      .upload(path, blob, { upsert: true, contentType: type })
 
     if (error) {
       console.error('Upload failed:', error.message)

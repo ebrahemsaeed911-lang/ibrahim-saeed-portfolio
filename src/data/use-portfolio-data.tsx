@@ -52,7 +52,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
       .from('portfolio_data')
       .upsert({ id: 1, data: newData, updated_at: new Date().toISOString() })
 
-    if (error) console.error('Failed to sync to Supabase:', error)
+    if (error) { /* sync failed — local state already updated */ }
   }
 
   return (

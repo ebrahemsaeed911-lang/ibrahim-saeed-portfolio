@@ -68,7 +68,6 @@ export default function ImageUploader({ label, value, onChange }: Props) {
 
       if (error) {
         setError(error.message)
-        console.error('Upload failed:', error.message)
         setUploading(false)
         return
       }
@@ -80,7 +79,6 @@ export default function ImageUploader({ label, value, onChange }: Props) {
       onChange(publicUrl.publicUrl)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Image processing failed')
-      console.error('Upload error:', err)
     } finally {
       setUploading(false)
     }

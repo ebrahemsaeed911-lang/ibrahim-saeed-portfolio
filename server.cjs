@@ -4,9 +4,60 @@ const nodemailer = require('nodemailer')
 const cors = require('cors')
 const { createClient } = require('@supabase/supabase-js')
 
+function escapeHtml(str) {
+  if (typeof str !== 'string') return ''
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+function sanitizeHeaderValue(str) {
+  if (typeof str !== 'string') return ''
+  return str.replace(/[\r\n]/g, '')
+}
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MAX_NAME = 100
+const MAX_EMAIL = 254
+const MAX_MESSAGE = 5000
+
+const rateLimitStore = new Map()
+function rateLimit(ip, limit, windowMs) {
+  const now = Date.now()
+  const entry = rateLimitStore.get(ip)
+  if (!entry || now - entry.start > windowMs) {
+    rateLimitStore.set(ip, { start: now, count: 1 })
+    return true
+  }
+  entry.count++
+  return entry.count <= limit
+}
+
+setInterval(() => {
+  const now = Date.now()
+  for (const [ip, entry] of rateLimitStore) {
+    if (now - entry.start > 120000) rateLimitStore.delete(ip)
+  }
+}, 60000)
+
 const app = express()
-app.use(cors())
-app.use(express.json())
+
+const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
+app.use(cors({ origin: allowedOrigin, methods: ['POST'], allowedHeaders: ['Content-Type'] }))
+app.use(express.json({ limit: '16kb' }))
+
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('X-XSS-Protection', '0')
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  next()
+})
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -32,11 +83,33 @@ async function getPortfolioData() {
 }
 
 app.post('/api/contact', async (req, res) => {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown'
+
+  if (!rateLimit(ip, 5, 60000)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
+  }
+
   const { name, email, message } = req.body
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields are required' })
   }
+
+  if (typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string') {
+    return res.status(400).json({ error: 'Invalid input types' })
+  }
+
+  if (name.length > MAX_NAME || email.length > MAX_EMAIL || message.length > MAX_MESSAGE) {
+    return res.status(400).json({ error: 'Input exceeds maximum length' })
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' })
+  }
+
+  const safeName = escapeHtml(sanitizeHeaderValue(name))
+  const safeEmail = escapeHtml(sanitizeHeaderValue(email))
+  const safeMessage = escapeHtml(message)
 
   try {
     const portfolioData = await getPortfolioData()
@@ -46,13 +119,13 @@ app.post('/api/contact', async (req, res) => {
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
       to: recipient,
-      subject: `Portfolio Message from ${name}`,
+      subject: `Portfolio Message from ${safeName}`,
       html: `
         <h3>New Contact Message</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${safeMessage}</p>
       `,
     })
 
@@ -61,7 +134,7 @@ app.post('/api/contact', async (req, res) => {
       to: email,
       subject: 'Thanks for reaching out!',
       html: `
-        <h3>Hi ${name},</h3>
+        <h3>Hi ${safeName},</h3>
         <p>Thanks for your message! I'll get back to you as soon as possible.</p>
         <br/>
         <p>Best,</p>
@@ -70,10 +143,9 @@ app.post('/api/contact', async (req, res) => {
     })
 
     res.json({ success: true })
-  } catch (err) {
-    console.error('Email error:', err)
+  } catch (_err) {
     res.status(500).json({ error: 'Failed to send message' })
   }
 })
 
-app.listen(3001, () => console.log('Server running on http://localhost:3001'))
+app.listen(3001, () => { /* server started */ })

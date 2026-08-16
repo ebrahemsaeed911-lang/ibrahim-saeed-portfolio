@@ -21,6 +21,24 @@ const MAX_NAME = 100
 const MAX_EMAIL = 254
 const MAX_MESSAGE = 5000
 
+const rateLimitStore = new Map()
+function rateLimit(ip, limit, windowMs) {
+  const now = Date.now()
+  const entry = rateLimitStore.get(ip)
+  if (!entry || now - entry.start > windowMs) {
+    rateLimitStore.set(ip, { start: now, count: 1 })
+    return true
+  }
+  entry.count++
+  return entry.count <= limit
+}
+setInterval(() => {
+  const now = Date.now()
+  for (const [ip, entry] of rateLimitStore) {
+    if (now - entry.start > 120000) rateLimitStore.delete(ip)
+  }
+}, 60000)
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -52,6 +70,14 @@ function setCorsHeaders(res) {
   res.setHeader('Access-Control-Max-Age', '86400')
 }
 
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for']
+  if (typeof forwarded === 'string') {
+    return forwarded.split(',')[0].trim()
+  }
+  return req.socket?.remoteAddress || 'unknown'
+}
+
 export default async function handler(req, res) {
   setCorsHeaders(res)
   res.setHeader('X-Content-Type-Options', 'nosniff')
@@ -65,6 +91,11 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  const ip = getClientIp(req)
+  if (!rateLimit(ip, 5, 60000)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
   }
 
   const { name, email, message } = req.body

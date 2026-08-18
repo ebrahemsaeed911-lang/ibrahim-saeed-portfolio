@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Mail, Lock, User, ShieldCheck } from 'lucide-react'
+import { Mail, Lock, User, ShieldCheck, Clock } from 'lucide-react'
 
 export default function DashboardAccount() {
   const [currentEmail, setCurrentEmail] = useState('')
@@ -8,8 +8,15 @@ export default function DashboardAccount() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [sessionExpiry, setSessionExpiry] = useState<string>('')
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.expires_at) {
+        const expires = new Date(data.session.expires_at * 1000)
+        setSessionExpiry(expires.toLocaleString())
+      }
+    })
     supabase.auth.getUser().then(({ data }) => {
       if (data.user?.email) setCurrentEmail(data.user.email)
     })
@@ -67,6 +74,12 @@ export default function DashboardAccount() {
               </p>
             </div>
           </div>
+          {sessionExpiry && (
+            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock size={12} />
+              <span>Session expires: {sessionExpiry}</span>
+            </div>
+          )}
         </div>
       )}
 

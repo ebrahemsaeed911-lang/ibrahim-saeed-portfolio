@@ -44,12 +44,13 @@ DROP POLICY IF EXISTS "Public read" ON storage.objects;
 CREATE POLICY "Public read" ON storage.objects
   FOR SELECT USING (bucket_id = 'portfolio-images');
 
--- Only authenticated users can upload images
+-- Only authenticated users can upload images (restricted to safe image types)
 DROP POLICY IF EXISTS "Auth upload" ON storage.objects;
 CREATE POLICY "Auth upload" ON storage.objects
   FOR INSERT WITH CHECK (
     bucket_id = 'portfolio-images'
     AND auth.uid() IS NOT NULL
+    AND storage.extension(name) IN ('jpg', 'jpeg', 'png', 'gif', 'webp')
   );
 
 -- Only authenticated users can update (replace) images

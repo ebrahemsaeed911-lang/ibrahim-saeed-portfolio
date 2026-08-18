@@ -49,7 +49,23 @@ const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
 app.use(cors({ origin: allowedOrigin, methods: ['POST'], allowedHeaders: ['Content-Type'] }))
 app.use(express.json({ limit: '16kb' }))
 
+let cspOrigin = ''
+try { cspOrigin = new URL(process.env.VITE_SUPABASE_URL).origin } catch {}
+const csp = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' ${cspOrigin} data: blob:`,
+  `connect-src 'self' ${cspOrigin}`,
+  "font-src 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ')
+
 app.use((_req, res, next) => {
+  res.setHeader('Content-Security-Policy', csp)
   res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('X-Frame-Options', 'DENY')
   res.setHeader('X-XSS-Protection', '0')

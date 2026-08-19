@@ -4,12 +4,11 @@ SET data = replace(data::text, '.png', '.webp')::jsonb
 WHERE id = 1;
 
 -- 2. Create RPC function for admin auth (signup vs login detection)
--- SECURITY INVOKER: runs with caller's permissions, not owner's
--- This prevents leaking user count to unauthenticated users via RLS
+-- SECURITY DEFINER: runs with owner's permissions so anonymous users can read auth.users count
 CREATE OR REPLACE FUNCTION get_auth_user_count()
 RETURNS integer
 LANGUAGE sql
-SECURITY INVOKER
+SECURITY DEFINER
 AS $$
   SELECT count(*)::integer FROM auth.users;
 $$;

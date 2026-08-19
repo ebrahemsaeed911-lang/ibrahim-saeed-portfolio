@@ -47,7 +47,7 @@ export default function AdminOverlay({ onClose }: Props) {
         {authed ? (
           <AdminDashboard onLogout={() => { supabase.auth.signOut(); setAuthed(false) }} onClose={onClose} />
         ) : (
-          <AdminAuth onAuth={() => setAuthed(true)} />
+          <AdminAuth onAuth={() => setAuthed(true)} onClose={onClose} />
         )}
       </motion.div>
     </AnimatePresence>

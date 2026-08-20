@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import AdminAuth from './admin-auth'
 import AdminDashboard from './admin-dashboard'
 
@@ -13,6 +13,11 @@ export default function AdminOverlay({ onClose }: Props) {
   const [checking, setChecking] = useState(true)
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setChecking(false)
+      return
+    }
+
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) setAuthed(true)
       setChecking(false)
@@ -44,7 +49,14 @@ export default function AdminOverlay({ onClose }: Props) {
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[9999] overflow-y-auto bg-background"
       >
-        {authed ? (
+        {!isSupabaseConfigured ? (
+          <div className="flex min-h-screen items-center justify-center bg-background p-6">
+            <div className="glass w-full max-w-sm rounded-3xl p-8 text-center">
+              <p className="text-sm text-red-400">Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.</p>
+              <button onClick={onClose} className="mt-4 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground">Close</button>
+            </div>
+          </div>
+        ) : authed ? (
           <AdminDashboard onLogout={() => { supabase.auth.signOut(); setAuthed(false) }} onClose={onClose} />
         ) : (
           <AdminAuth onAuth={() => setAuthed(true)} onClose={onClose} />

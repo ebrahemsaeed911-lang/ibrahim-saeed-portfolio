@@ -121,7 +121,11 @@ function ProjectCard({ project: p, index: i }: { project: { title: string; image
               href={p.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary"
+              className={`inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-medium transition-all hover:-translate-y-0.5 ${
+                !p.demo || p.demo === '#'
+                  ? 'flex-1 border border-border text-foreground hover:border-primary/50 hover:text-primary'
+                  : 'border border-border text-foreground hover:border-primary/50 hover:text-primary'
+              }`}
             >
               <GithubIcon size={16} /> Code
             </a>

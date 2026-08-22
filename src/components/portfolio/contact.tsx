@@ -39,7 +39,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative px-6 py-28 md:py-36">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[60px] will-change-[filter]" />
 
       <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
         <div>

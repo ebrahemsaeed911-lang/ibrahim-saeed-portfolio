@@ -39,31 +39,50 @@ setInterval(() => {
   }
 }, 60000)
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-})
+let _transporter = null
+function getTransporter() {
+  if (!_transporter && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    _transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    })
+  }
+  return _transporter
+}
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_ANON_KEY
-)
+let _supabase = null
+function getSupabase() {
+  if (!_supabase && process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY) {
+    _supabase = createClient(
+      process.env.VITE_SUPABASE_URL,
+      process.env.VITE_SUPABASE_ANON_KEY
+    )
+  }
+  return _supabase
+}
 
 async function getPortfolioData() {
-  const { data } = await supabase
-    .from('portfolio_data')
-    .select('data')
-    .eq('id', 1)
-    .single()
+  const supabase = getSupabase()
+  if (!supabase) return null
 
-  return data?.data
+  try {
+    const { data } = await supabase
+      .from('portfolio_data')
+      .select('data')
+      .eq('id', 1)
+      .single()
+
+    return data?.data
+  } catch {
+    return null
+  }
 }
 
 function setCorsHeaders(res) {
-  const origin = process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
+  const origin = process.env.ALLOWED_ORIGIN || '*'
   res.setHeader('Access-Control-Allow-Origin', origin)
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -79,7 +98,7 @@ function getClientIp(req) {
 }
 
 let cspOrigin = ''
-try { cspOrigin = new URL(process.env.VITE_SUPABASE_URL).origin } catch {}
+try { cspOrigin = new URL(process.env.VITE_SUPABASE_URL || '').origin } catch {}
 const csp = [
   "default-src 'self'",
   "script-src 'self'",
@@ -132,6 +151,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid email format' })
   }
 
+  const transporter = getTransporter()
+  if (!transporter) {
+    return res.status(500).json({ error: 'Email service not configured' })
+  }
+
   const safeName = escapeHtml(sanitizeHeaderValue(name))
   const safeEmail = escapeHtml(sanitizeHeaderValue(email))
   const safeMessage = escapeHtml(message)
@@ -154,18 +178,20 @@ export default async function handler(req, res) {
       `,
     })
 
-    await transporter.sendMail({
-      from: `"${profileName}" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: 'Thanks for reaching out!',
-      html: `
-        <h3>Hi ${safeName},</h3>
-        <p>Thanks for your message! I'll get back to you as soon as possible.</p>
-        <br/>
-        <p>Best,</p>
-        <p>${profileName}</p>
-      `,
-    })
+    try {
+      await transporter.sendMail({
+        from: `"${profileName}" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Thanks for reaching out!',
+        html: `
+          <h3>Hi ${safeName},</h3>
+          <p>Thanks for your message! I'll get back to you as soon as possible.</p>
+          <br/>
+          <p>Best,</p>
+          <p>${profileName}</p>
+        `,
+      })
+    } catch {}
 
     res.json({ success: true })
   } catch (_err) {

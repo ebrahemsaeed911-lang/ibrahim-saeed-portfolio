@@ -55,6 +55,9 @@ export default function Footer() {
         <p className="text-center text-sm text-muted-foreground">
           &copy; {new Date().getFullYear()} {data.profile.name}. {footer.tagline}
         </p>
+        <p className="text-center text-xs text-muted-foreground/60">
+          Designed & Developed by {data.profile.name}
+        </p>
       </div>
     </footer>
   )

@@ -13,7 +13,6 @@ const PortfolioContext = createContext<ContextValue | null>(null)
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-const revalidateSecret = import.meta.env.VITE_REVALIDATE_SECRET || ''
 
 async function fetchFromSupabase(): Promise<PortfolioData | null> {
   try {
@@ -72,11 +71,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
     if (error) return
 
     try {
-      await fetch('/api/revalidate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(revalidateSecret ? { secret: revalidateSecret } : {}),
-      })
+      await fetch('/api/revalidate', { method: 'POST' })
     } catch { /* revalidation is best-effort */ }
   }
 

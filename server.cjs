@@ -164,20 +164,54 @@ app.post('/api/contact', async (req, res) => {
   }
 })
 
+function parseCookies(req) {
+  const raw = req.headers.cookie || ''
+  const out = {}
+  for (const part of raw.split(';')) {
+    const eq = part.indexOf('=')
+    if (eq === -1) continue
+    let value = part.slice(eq + 1).trim()
+    try { value = decodeURIComponent(value) } catch {}
+    out[part.slice(0, eq).trim()] = value
+  }
+  return out
+}
+
+async function hasValidAdminSession(req) {
+  const url = process.env.VITE_SUPABASE_URL
+  const key = process.env.VITE_SUPABASE_ANON_KEY
+  if (!url || !key) return false
+  const token = parseCookies(req)['sb-auth-access-token']
+  if (!token) return false
+  try {
+    const res = await fetch(`${url}/auth/v1/user`, {
+      headers: { apikey: key, Authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) return false
+    const user = await res.json()
+    return Boolean(user?.id && user?.email)
+  } catch {
+    return false
+  }
+}
+
 app.post('/api/revalidate', async (req, res) => {
   const ip = req.ip || req.connection.remoteAddress || 'unknown'
   if (!rateLimit(ip, 10, 600000)) {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' })
   }
 
-  const expected = process.env.REVALIDATE_SECRET || ''
-  if (expected && req.body?.secret !== expected) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
   const hookUrl = process.env.VERCEL_DEPLOY_HOOK_URL || ''
   if (!hookUrl) {
     return res.status(503).json({ error: 'Revalidation not configured' })
+  }
+
+  const expected = process.env.REVALIDATE_SECRET || ''
+  const hasMatchingSecret = Boolean(expected && req.body?.secret && req.body.secret === expected)
+  const hasSession = await hasValidAdminSession(req)
+
+  if (!hasMatchingSecret && !hasSession) {
+    return res.status(401).json({ error: 'Unauthorized' })
   }
 
   try {

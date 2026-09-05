@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { setAdminLiveData } from '@/data/use-portfolio-data'
 import AdminAuth from './admin-auth'
 import AdminDashboard from './admin-dashboard'
 
@@ -11,6 +12,13 @@ interface Props {
 export default function AdminOverlay({ onClose }: Props) {
   const [authed, setAuthed] = useState(false)
   const [checking, setChecking] = useState(true)
+
+  useEffect(() => {
+    if (authed) setAdminLiveData(true)
+    else setAdminLiveData(false)
+  }, [authed])
+
+  useEffect(() => () => setAdminLiveData(false), [])
 
   useEffect(() => {
     if (!isSupabaseConfigured) {

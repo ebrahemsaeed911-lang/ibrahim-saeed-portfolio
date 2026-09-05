@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "tsc && vite build",
+    "build": "node scripts/sync-data.mjs && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

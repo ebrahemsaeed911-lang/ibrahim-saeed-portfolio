@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import defaultData from './portfolio-data.json'
 
 export type PortfolioData = typeof defaultData
@@ -13,6 +13,7 @@ const PortfolioContext = createContext<ContextValue | null>(null)
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+const revalidateSecret = import.meta.env.VITE_REVALIDATE_SECRET || ''
 
 async function fetchFromSupabase(): Promise<PortfolioData | null> {
   try {
@@ -27,22 +28,38 @@ async function fetchFromSupabase(): Promise<PortfolioData | null> {
   }
 }
 
+let setLiveRef: ((active: boolean) => void) | null = null
+
+export function setAdminLiveData(active: boolean) {
+  setLiveRef?.(active)
+}
+
 export function PortfolioProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<PortfolioData>(defaultData)
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => { setLoading(false) }, [])
+  const [live, setLive] = useState(false)
+  const mounted = useRef(true)
 
   useEffect(() => {
-    if (!supabaseUrl || !supabaseKey) return
+    setLoading(false)
+    return () => { mounted.current = false }
+  }, [])
+
+  useEffect(() => {
+    setLiveRef = setLive
+    return () => { setLiveRef = null }
+  }, [])
+
+  useEffect(() => {
+    if (!live || !supabaseUrl || !supabaseKey) return
 
     const timeout = setTimeout(async () => {
       const remote = await fetchFromSupabase()
-      if (remote) setData(remote)
-    }, 500)
+      if (mounted.current && remote) setData(remote)
+    }, 300)
 
     return () => clearTimeout(timeout)
-  }, [])
+  }, [live])
 
   const save = async (newData: PortfolioData) => {
     setData(newData)
@@ -52,7 +69,15 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
       .from('portfolio_data')
       .upsert({ id: 1, data: newData, updated_at: new Date().toISOString() })
 
-    if (error) { /* sync failed — local state already updated */ }
+    if (error) return
+
+    try {
+      await fetch('/api/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(revalidateSecret ? { secret: revalidateSecret } : {}),
+      })
+    } catch { /* revalidation is best-effort */ }
   }
 
   return (

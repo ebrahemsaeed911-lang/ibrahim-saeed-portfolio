@@ -164,4 +164,31 @@ app.post('/api/contact', async (req, res) => {
   }
 })
 
+app.post('/api/revalidate', async (req, res) => {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown'
+  if (!rateLimit(ip, 10, 600000)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
+  }
+
+  const expected = process.env.REVALIDATE_SECRET || ''
+  if (expected && req.body?.secret !== expected) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  const hookUrl = process.env.VERCEL_DEPLOY_HOOK_URL || ''
+  if (!hookUrl) {
+    return res.status(503).json({ error: 'Revalidation not configured' })
+  }
+
+  try {
+    const hookRes = await fetch(hookUrl, { method: 'POST' })
+    if (!hookRes.ok) {
+      return res.status(502).json({ error: 'Revalidation failed' })
+    }
+    res.json({ success: true })
+  } catch {
+    res.status(502).json({ error: 'Revalidation failed' })
+  }
+})
+
 app.listen(3001, () => { /* server started */ })

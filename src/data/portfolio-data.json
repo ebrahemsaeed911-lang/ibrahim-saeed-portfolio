@@ -3,34 +3,49 @@
     "name": "Ibrahim Saeed",
     "initials": "IS",
     "mainTitle": "Front-End Developer",
-    "profileImage": "/profile-hero.webp",
-    "aboutImage": "/profile-about.webp",
+    "profileImage": "https://xpewtomafuogqakqfrzv.supabase.co/storage/v1/object/public/portfolio-images/1787317317283-5xbr47ptarh.webp",
+    "aboutImage": "https://xpewtomafuogqakqfrzv.supabase.co/storage/v1/object/public/portfolio-images/1787317325056-kjvh8pvi4vm.webp",
     "favicon": "",
     "faviconText": "IS"
   },
   "hero": {
     "badge": "Open to opportunities",
-    "greeting": "Hi, I'm Ibrahim Saeed",
+    "greeting": "Hi, I am Ibrahim Saeed",
     "title": "Front-End",
     "subtitle": "Developer",
-    "description": "A passionate self-taught developer learning to build clean, responsive websites and applications with React, HTML, CSS, JavaScript, and Python.",
+    "description": "I’m a self-taught developer at the beginning of my programming journey. I’m focused on learning front-end development while exploring full-stack development through technologies like React, TypeScript, Next.js, Node.js, SQL, and Supabase. I learn by building real projects, experimenting with new technologies, and improving with every project.\n",
     "profileImage": "/profile-hero.webp",
     "buttons": {
-      "primary": { "text": "View Projects", "action": "projects" },
-      "secondary": { "text": "Contact Me", "action": "contact" }
+      "primary": {
+        "text": "View Projects",
+        "action": "projects"
+      },
+      "secondary": {
+        "text": "Contact Me",
+        "action": "contact"
+      }
     }
   },
   "about": {
     "sectionTitle": "About Me",
     "heading": "Turning ideas into refined web experiences",
     "paragraphs": [
-      "I'm a passionate front-end developer learning React and modern web technologies. I enjoy turning ideas into clean, responsive interfaces that look great and work smoothly across every device.",
-      "Currently focused on React, TypeScript, and building projects that solve real problems. Every line of code is a step forward in my learning journey."
+      "I’m a self-taught developer at the beginning of my programming journey, focused on learning front-end development and building real projects. I enjoy turning ideas into clean, responsive web experiences while continuously learning new technologies and improving my skills.\n",
+      "Currently, I’m learning and building with HTML, CSS, JavaScript, TypeScript, React, Python, Git, and GitHub, while exploring full-stack development with Next.js, Node.js, Express, SQL, and Supabase. I learn through hands-on projects, using each one as an opportunity to experiment, solve problems, and grow as a developer.\n"
     ],
     "stats": [
-      { "value": "1+", "label": "Year Learning" },
-      { "value": "+5", "label": "Projects Built" },
-      { "value": "100%", "label": "Self-Taught" }
+      {
+        "label": "Year Learning",
+        "value": "1+"
+      },
+      {
+        "label": "Projects Built",
+        "value": "+5"
+      },
+      {
+        "label": "Self-Taught",
+        "value": "100%"
+      }
     ]
   },
   "skills": {
@@ -38,17 +53,92 @@
     "heading": "Technologies I work with",
     "learningHeading": "Currently Learning",
     "items": [
-      { "name": "HTML5", "level": 95, "desc": "Semantic markup, accessible structure, SEO-friendly.", "icon": "</>" },
-      { "name": "CSS3", "level": 90, "desc": "Responsive layouts, flexbox/grid, animations, design systems.", "icon": "{ }" },
-      { "name": "JavaScript (ES6+)", "level": 85, "desc": "DOM manipulation, async patterns, ES6+ features, logic.", "icon": "JS" },
-      { "name": "TypeScript", "level": 75, "desc": "Static typing, interfaces, generics, type-safe code.", "icon": "TS" },
-      { "name": "Python", "level": 80, "desc": "Scripting, automation, data processing, backend logic.", "icon": "PY" },
-      { "name": "React", "level": 75, "desc": "Component architecture, JSX, hooks, state management, SPA development.", "icon": "⚛" },
-      { "name": "Git & GitHub", "level": 85, "desc": "Version control, branching, collaboration, CI workflows.", "icon": "GIT" },
-      { "name": "SQL", "level": 25, "desc": "Queries, joins, and database fundamentals. Still learning.", "icon": "SQL", "learning": true },
-      { "name": "Node.js", "level": 20, "desc": "JavaScript runtime for building backend services. Still learning.", "icon": "NODE", "learning": true },
-      { "name": "Express.js", "level": 20, "desc": "Web framework for building APIs and servers. Still learning.", "icon": "EX", "learning": true },
-      { "name": "Tailwind CSS", "level": 30, "desc": "Utility-first CSS framework for rapid styling. Still learning.", "icon": "TW", "learning": true }
+      {
+        "desc": "Semantic markup, accessible structure, SEO-friendly.",
+        "icon": "</>",
+        "name": "HTML5",
+        "level": 95
+      },
+      {
+        "desc": "Responsive layouts, flexbox/grid, animations, design systems.",
+        "icon": "{ }",
+        "name": "CSS3",
+        "level": 90
+      },
+      {
+        "desc": "DOM manipulation, async patterns, ES6+ features, logic.",
+        "icon": "JS",
+        "name": "JavaScript (ES6+)",
+        "level": 85
+      },
+      {
+        "desc": "Static typing, interfaces, generics, type-safe code.",
+        "icon": "TS",
+        "name": "TypeScript",
+        "level": 75,
+        "learning": false
+      },
+      {
+        "desc": "Scripting, automation, data processing, backend logic.",
+        "icon": "PY",
+        "name": "Python",
+        "level": 80
+      },
+      {
+        "desc": "Component architecture, JSX, hooks, state management, SPA development.",
+        "icon": "⚛",
+        "name": "React",
+        "level": 50,
+        "learning": true
+      },
+      {
+        "desc": "Version control, branching, collaboration, CI workflows.",
+        "icon": "GIT",
+        "name": "Git & GitHub",
+        "level": 85
+      },
+      {
+        "desc": "Queries, joins, and database fundamentals. Still learning.",
+        "icon": "SQL",
+        "name": "SQL",
+        "level": 25,
+        "learning": true
+      },
+      {
+        "desc": "JavaScript runtime for building backend services. Still learning.",
+        "icon": "NODE",
+        "name": "Node.js",
+        "level": 20,
+        "learning": true
+      },
+      {
+        "desc": "Web framework for building APIs and servers. Still learning.",
+        "icon": "EX",
+        "name": "Express.js",
+        "level": 20,
+        "learning": true
+      },
+      {
+        "desc": "Utility-first CSS framework for rapid styling. Still learning.",
+        "icon": "TW",
+        "name": "Tailwind CSS",
+        "level": 30,
+        "learning": true
+      },
+      {
+        "desc": "Learning Supabase for databases, authentication, and backend features.",
+        "icon": "sp",
+        "name": "supabase",
+        "level": 25,
+        "learning": true
+      },
+      {
+        "desc": "Currently learning PostgreSQL for relational database management and web applications.",
+        "icon": "SQL",
+        "name": "PostgreSQL",
+        "level": 30,
+        "learning": true
+      }
     ]
   },
   "experience": {
@@ -56,72 +146,121 @@
     "heading": "My journey so far",
     "items": [
       {
-        "period": "2024 \u2014 Present",
+        "desc": "Building projects with React, JavaScript, TypeScript, HTML, CSS, and Python. Learning component architecture, state management, and modern front-end tools.",
         "title": "Building Personal Projects",
-        "company": "Self-Taught",
-        "desc": "Building projects with React, JavaScript, TypeScript, HTML, CSS, and Python. Learning component architecture, state management, and modern front-end tools."
+        "period": "2024 — Present",
+        "company": "Self-Taught"
       },
       {
-        "period": "2023 \u2014 2024",
+        "desc": "Focused on front-end technologies: HTML5, CSS3, responsive design, and JavaScript ES6+. Started learning React and building interactive UIs.",
         "title": "Learning Web Development",
-        "company": "Self-Taught",
-        "desc": "Focused on front-end technologies: HTML5, CSS3, responsive design, and JavaScript ES6+. Started learning React and building interactive UIs."
+        "period": "2023 — 2024",
+        "company": "Self-Taught"
       },
       {
-        "period": "2022 \u2014 2023",
+        "desc": "Learned the fundamentals of programming with Python. Explored problem-solving, logic, and basic scripting before moving into web development.",
         "title": "Started Programming",
-        "company": "Self-Taught",
-        "desc": "Learned the fundamentals of programming with Python. Explored problem-solving, logic, and basic scripting before moving into web development."
+        "period": "2022 — 2023",
+        "company": "Self-Taught"
       }
     ]
   },
   "projects": {
     "sectionTitle": "Selected Work",
-    "heading": "Projects I'm proud of",
-    "description": "A selection of recent builds \u2014 each crafted with attention to detail, performance, and delightful interaction.",
+    "heading": "Projects I am proud of",
+    "description": "A selection of recent builds — each crafted with attention to detail, performance, and delightful interaction.",
     "items": [
       {
-        "title": "Noor Islamic Web",
+        "demo": "https://noor-islamic-web.vercel.app",
         "desc": "Comprehensive Islamic app: full Quran with reciters, athkar, prayer times, tasbeeh, ruqyah, and more.",
-        "image": "/project-noor.webp",
-        "tags": ["JavaScript", "HTML", "CSS", "PWA"],
+        "tags": [
+          "JavaScript",
+          "HTML",
+          "CSS",
+          "PWA"
+        ],
         "type": "Web App",
-        "demo": "https://noor-islamic-web.vercel.app"
+        "image": "/project-noor.webp",
+        "title": "Noor Islamic Web"
       },
       {
-        "title": "Work Time Tracker",
-        "desc": "Track attendance, calculate work hours, expected salary, and deductions. Export reports to PDF and CSV.",
-        "image": "/project-wtt.webp",
-        "tags": ["JavaScript", "HTML", "CSS", "PWA"],
-        "type": "Web App",
         "demo": "https://work-time-tracker-ibrahim.vercel.app/",
+        "desc": "Track attendance, calculate work hours, expected salary, and deductions. Export reports to PDF and CSV.",
+        "tags": [
+          "JavaScript",
+          "HTML",
+          "CSS",
+          "PWA"
+        ],
+        "type": "Web App",
+        "image": "/project-wtt.webp",
+        "title": "Work Time Tracker",
         "github": "https://github.com/ebrahemsaeed911-lang/work-time-tracker"
       },
       {
-        "title": "Personal Portfolio",
-        "desc": "Interactive portfolio with dark mode, glassmorphism, smooth animations, custom cursor, particles, and email integration.",
-        "image": "/project-portfolio.webp",
-        "tags": ["React", "JavaScript", "Tailwind CSS", "TypeScript"],
+        "demo": "#home",
+        "desc": "An interactive personal portfolio built with React, TypeScript, and Vite, featuring a responsive design, dark mode, glassmorphism, smooth animations, custom cursor effects, particles, dynamic content, and email integration. It also includes Supabase-powered authentication, database, storage, and security features, with an Express.js server handling contact form emails.\n",
+        "tags": [
+          "React",
+          "JavaScript",
+          "Tailwind CSS",
+          "TypeScript",
+          "Node.js",
+          "Sql",
+          "Supabase",
+          "Vite",
+          "Express.js",
+          "PostgreSQL"
+        ],
         "type": "Web App",
-        "demo": "#home"
+        "image": "https://xpewtomafuogqakqfrzv.supabase.co/storage/v1/object/public/portfolio-images/1787317797189-ejt4g87fptf.webp",
+        "title": "Personal Portfolio",
+        "github": "https://github.com/ebrahemsaeed911-lang/ibrahim-saeed-portfolio"
       },
       {
-        "title": "Weather App",
-        "desc": "Desktop weather app built with Python and Tkinter. Fetches real-time temperature, humidity, wind speed, and pressure using the OpenWeatherMap API.",
-        "image": "/project-weather.webp",
-        "tags": ["Python", "Tkinter", "API"],
-        "type": "Desktop App",
         "demo": "#",
+        "desc": "Desktop weather app built with Python and Tkinter. Fetches real-time temperature, humidity, wind speed, and pressure using the OpenWeatherMap API.",
+        "tags": [
+          "Python",
+          "Tkinter",
+          "API",
+          "GUI"
+        ],
+        "type": "Desktop App",
+        "image": "/project-weather.webp",
+        "title": "Weather App",
         "github": "https://github.com/ebrahemsaeed911-lang/weather-app/blob/main/weather%20-app.py"
       },
       {
-        "title": "Text Editor",
-        "desc": "Multi-tab text editor built with Python and Tkinter. Features file management, keyboard shortcuts, sidebar controls, and tabbed interface.",
-        "image": "/project-text-editor.webp",
-        "tags": ["Python", "Tkinter", "GUI"],
-        "type": "Desktop App",
         "demo": "#",
+        "desc": "Multi-tab text editor built with Python and Tkinter. Features file management, keyboard shortcuts, sidebar controls, and tabbed interface.",
+        "tags": [
+          "Python",
+          "Tkinter",
+          "GUI"
+        ],
+        "type": "Desktop App",
+        "image": "/project-text-editor.webp",
+        "title": "Text Editor",
         "github": "https://github.com/ebrahemsaeed911-lang/text-editor/blob/main/text_editor%20.py"
+      },
+      {
+        "demo": "https://hima-ta3lemia.vercel.app/",
+        "desc": "An educational web platform built to organize learning content into courses, lessons, articles, quizzes, and practical exercises. Built with Next.js, React, TypeScript, Tailwind CSS, and Supabase, with a responsive interface designed to make educational content easy to explore and navigate.\n",
+        "tags": [
+          "TypeScript",
+          "JavaScript",
+          "Next.js",
+          "React",
+          "Tailwind CSS",
+          "Supabase",
+          "SQL",
+          "PostgreSQL"
+        ],
+        "type": "Web App",
+        "image": "https://xpewtomafuogqakqfrzv.supabase.co/storage/v1/object/public/portfolio-images/1787315080108-udic5vvhxmg.webp",
+        "title": "Hima-ta3lemia",
+        "github": ""
       }
     ]
   },
@@ -130,36 +269,57 @@
     "heading": "How I can help you",
     "items": [
       {
+        "num": "01",
+        "desc": "Building clean, responsive websites that adapt smoothly to different screen sizes and devices.",
         "icon": "MonitorSmartphone",
-        "title": "Responsive Web Design",
-        "desc": "Pixel-perfect interfaces that adapt beautifully across mobile, tablet, and desktop.",
-        "num": "01"
+        "title": "Responsive Web Design"
       },
       {
+        "num": "02",
+        "desc": "Creating modern landing pages with clean layouts, responsive design, and a focus on user experience.",
         "icon": "Layout",
-        "title": "Landing Page Development",
-        "desc": "High-converting, fast-loading landing pages designed to capture attention and drive action.",
-        "num": "02"
+        "title": "Landing Page Development"
       },
       {
+        "num": "03",
+        "desc": "Updating, improving, and fixing existing websites to keep them functional, responsive, and up to date.",
         "icon": "Wrench",
-        "title": "Website Maintenance",
-        "desc": "Ongoing updates, performance tuning, and bug fixes to keep your site running flawlessly.",
-        "num": "03"
+        "title": "Website Maintenance"
       }
     ]
   },
   "nav": {
     "links": [
-      { "id": "home", "label": "Home" },
-      { "id": "about", "label": "About" },
-      { "id": "skills", "label": "Skills" },
-      { "id": "experience", "label": "Experience" },
-      { "id": "projects", "label": "Projects" },
-      { "id": "services", "label": "Services" },
-      { "id": "contact", "label": "Contact" }
+      {
+        "id": "home",
+        "label": "Home"
+      },
+      {
+        "id": "about",
+        "label": "About"
+      },
+      {
+        "id": "skills",
+        "label": "Skills"
+      },
+      {
+        "id": "experience",
+        "label": "Experience"
+      },
+      {
+        "id": "projects",
+        "label": "Projects"
+      },
+      {
+        "id": "services",
+        "label": "Services"
+      },
+      {
+        "id": "contact",
+        "label": "Contact"
+      }
     ],
-    "talkText": "Let's talk",
+    "talkText": "Lets talk",
     "name": "Ibrahim Saeed",
     "logo": "IS"
   },
@@ -170,9 +330,9 @@
   },
   "contact": {
     "sectionTitle": "Contact",
-    "heading": "Let's build something together",
-    "description": "Have a project in mind or just want to say hi? Drop me a message and I'll get back to you as soon as possible.",
-    "email": "ebrahemsaeed911@gmail.com"
+    "heading": "Lets build something together",
+    "description": "Have a question, idea, or just want to say hello? Feel free to reach out. I’m always happy to connect, share ideas, learn from others, and have a good conversation.",
+    "email": "ibrahim.saeed.dev@gmail.com"
   },
   "footer": {
     "tagline": "Crafted with care using HTML, CSS & JavaScript."

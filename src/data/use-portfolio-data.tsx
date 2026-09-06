@@ -27,38 +27,25 @@ async function fetchFromSupabase(): Promise<PortfolioData | null> {
   }
 }
 
-let setLiveRef: ((active: boolean) => void) | null = null
-
-export function setAdminLiveData(active: boolean) {
-  setLiveRef?.(active)
-}
-
 export function PortfolioProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<PortfolioData>(defaultData)
   const [loading, setLoading] = useState(true)
-  const [live, setLive] = useState(false)
   const mounted = useRef(true)
 
   useEffect(() => {
-    setLoading(false)
     return () => { mounted.current = false }
   }, [])
 
   useEffect(() => {
-    setLiveRef = setLive
-    return () => { setLiveRef = null }
-  }, [])
+    setLoading(false)
 
-  useEffect(() => {
-    if (!live || !supabaseUrl || !supabaseKey) return
-
-    const timeout = setTimeout(async () => {
+    async function loadLatest() {
       const remote = await fetchFromSupabase()
       if (mounted.current && remote) setData(remote)
-    }, 300)
+    }
 
-    return () => clearTimeout(timeout)
-  }, [live])
+    loadLatest()
+  }, [])
 
   const save = async (newData: PortfolioData) => {
     setData(newData)

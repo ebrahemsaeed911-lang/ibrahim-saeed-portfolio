@@ -2,13 +2,23 @@ import { useEffect, useRef, useState } from 'react'
 
 export function CustomCursor() {
   const [enabled, setEnabled] = useState(false)
+  const [suppressed, setSuppressed] = useState(false)
   const ringRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!matchMedia('(pointer: fine)').matches) return
     setEnabled(true)
-    document.documentElement.classList.add('cursor-none-fine')
+
+    const sync = () => {
+      const inAdmin = Boolean(document.querySelector('[data-admin]'))
+      setSuppressed(inAdmin)
+      document.documentElement.classList.toggle('cursor-none-fine', !inAdmin)
+    }
+
+    const observer = new MutationObserver(sync)
+    observer.observe(document.body, { childList: true, subtree: true })
+    sync()
 
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
     const ring = { x: target.x, y: target.y }
@@ -39,11 +49,12 @@ export function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', onMove)
       cancelAnimationFrame(animId)
+      observer.disconnect()
       document.documentElement.classList.remove('cursor-none-fine')
     }
   }, [])
 
-  if (!enabled) return null
+  if (!enabled || suppressed) return null
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[9998] hidden md:block">

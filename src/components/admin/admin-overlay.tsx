@@ -47,6 +47,7 @@ export default function AdminOverlay({ onClose }: Props) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        data-admin
         className="fixed inset-0 z-[9999] overflow-y-auto bg-background"
       >
         {!isSupabaseConfigured ? (

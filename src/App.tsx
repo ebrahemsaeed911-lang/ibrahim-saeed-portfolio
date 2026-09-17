@@ -33,7 +33,6 @@ export default function App() {
 
   return (
     <>
-      <div aria-hidden="true" className="bg-grid pointer-events-none fixed inset-0 -z-10" />
       <Suspense fallback={null}>
         <Particles />
       </Suspense>

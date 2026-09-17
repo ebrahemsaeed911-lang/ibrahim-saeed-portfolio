@@ -18,7 +18,7 @@ export default function App() {
     const link = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
     if (link) {
       const txt = data.profile.faviconText || 'IS'
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#05060A"/><text x="16" y="22" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#F5F5F5">${escapeXml(txt)}</text></svg>`
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#06060C"/><text x="16" y="22" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#F5F5F7">${escapeXml(txt)}</text></svg>`
       link.href = data.profile.favicon || 'data:image/svg+xml,' + encodeURIComponent(svg)
     }
 

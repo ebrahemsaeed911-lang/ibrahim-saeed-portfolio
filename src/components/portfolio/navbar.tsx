@@ -28,36 +28,42 @@ export function Navbar() {
 
   useEffect(() => {
     let ticking = false
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollTop = window.scrollY
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight
-          setProgress(docHeight > 0 ? scrollTop / docHeight : 0)
-          setScrolled(scrollTop > 24)
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
+    const update = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0)
+      setScrolled(scrollTop > 24)
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px' }
-    )
-    nav.links.forEach((l) => {
-      const el = document.getElementById(l.id)
-      if (el) observer.observe(el)
-    })
+      const marker = window.innerHeight * 0.35
+      let current = nav.links[0]?.id ?? 'home'
+      for (const l of nav.links) {
+        const el = document.getElementById(l.id)
+        if (el && el.getBoundingClientRect().top <= marker) current = l.id
+      }
+      if (docHeight > 0 && scrollTop >= docHeight - 2 && nav.links.length) {
+        current = nav.links[nav.links.length - 1].id
+      }
+      setActive(current)
+    }
+    const schedule = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        update()
+        ticking = false
+      })
+    }
+
+    update()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule, { passive: true })
+
+    const observer = new MutationObserver(schedule)
+    observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
-      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
       observer.disconnect()
     }
   }, [nav.links])

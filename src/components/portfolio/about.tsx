@@ -11,7 +11,7 @@ export default function About() {
       <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[320px_minmax(0,1fr)] md:gap-16">
         <Reveal>
           <div className="mx-auto w-full max-w-[300px] md:max-w-none">
-            <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(124,92,255,0.6),inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+            <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(255,255,255,0.3),inset_0_1px_0_0_rgba(255,255,255,0.05)]">
               <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
                 <img
                   src={data.profile.aboutImage}

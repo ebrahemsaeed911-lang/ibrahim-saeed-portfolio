@@ -80,7 +80,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 animate-fade-up">
+      <header className="animate-slide-down fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
         <nav
           aria-label="Primary"
           className={`relative flex w-full max-w-5xl items-center justify-between overflow-hidden rounded-2xl px-2.5 py-2 transition-all duration-300 md:px-3 ${

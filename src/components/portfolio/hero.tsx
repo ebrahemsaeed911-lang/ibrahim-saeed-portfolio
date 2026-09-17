@@ -1,168 +1,117 @@
-import { useEffect, useRef } from 'react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
-const floats = [
-  { label: '</>', top: '18%', left: '8%', delay: 0, dur: 6 },
-  { label: '{ }', top: '26%', right: '10%', delay: 0.5, dur: 7 },
-  { label: 'CSS', bottom: '24%', left: '12%', delay: 1, dur: 8 },
-  { label: 'JS', bottom: '30%', right: '14%', delay: 1.5, dur: 6.5 },
-]
+const metadata = [
+  { label: 'ROLE', key: 'role' },
+  { label: 'FOCUS', key: 'focus' },
+  { label: 'STATUS', key: 'status' },
+  { label: 'LEARNING', key: 'learning' },
+] as const
 
 export function Hero() {
   const { data } = usePortfolioData()
-  const ref = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const { hero } = data
 
   const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
-  const { hero } = data
-
-  useEffect(() => {
-    let ticking = false
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const rect = ref.current?.getBoundingClientRect()
-          if (rect) {
-            const progress = Math.min(1, Math.max(0, -rect.top / rect.height))
-            const y = progress * 160
-            const opacity = Math.max(0, 1 - progress / 0.7)
-            if (contentRef.current) {
-              contentRef.current.style.transform = `translateY(${y}px)`
-              contentRef.current.style.opacity = String(opacity)
-            }
-          }
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const values: Record<(typeof metadata)[number]['key'], string> = {
+    role: `${hero.title} ${hero.subtitle}`,
+    focus: 'React · TypeScript · Next.js',
+    status: hero.badge,
+    learning: 'Node.js · Supabase',
+  }
 
   return (
-    <section
-      id="home"
-      ref={ref}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-28"
-    >
-      <div className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[460px] w-[460px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-10 right-1/4 -z-10 h-[320px] w-[320px] rounded-full bg-accent/20 blur-[120px]" />
+    <section id="home" className="relative overflow-hidden px-6 pb-24 pt-36 md:pb-32 md:pt-44">
+      <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-x-0 top-0 -z-20 h-[640px]" />
+      <div aria-hidden="true" className="ambient-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-[720px]" />
 
-      {floats.map((f, i) => (
-        <div
-          key={i}
-          aria-hidden="true"
-          className="glass absolute hidden rounded-2xl px-4 py-3 font-mono text-sm text-primary md:block"
-          style={{ top: f.top, left: f.left, right: f.right, bottom: f.bottom, animation: `float ${f.dur}s ease-in-out ${f.delay}s infinite` }}
-        >
-          {f.label}
-        </div>
-      ))}
-
-      <div ref={contentRef} className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-12 md:flex-row md:text-left">
-        <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left">
-          <div
-            className="glass mb-7 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-muted-foreground animate-fade-slide-up"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-20">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-3.5 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="font-mono text-xs tracking-wide text-muted-foreground">
+              {hero.badge}
             </span>
-            {hero.badge}
           </div>
 
-          <p
-            className="mb-3 flex items-center gap-2 font-mono text-sm uppercase tracking-[0.3em] text-primary animate-fade-slide-up"
-            style={{ animationDelay: '0.1s' }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
-              <path d="M20 2v4" />
-              <path d="M22 4h-4" />
-              <circle cx="4" cy="20" r="2" />
-            </svg> Hi, I'm {data.profile.name}
-          </p>
-
-          <h1 className="text-balance text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-            {hero.title.split('').map((c, i) => (
-              <span
-                key={i}
-                className="inline-block animate-fade-slide-up"
-                style={{ animationDelay: `${0.2 + i * 0.03}s`, animationFillMode: 'both' }}
-              >
-                {c === ' ' ? '\u00A0' : c}
-              </span>
-            ))}
-            <br />
-            <span className="text-gradient">{hero.subtitle}</span>
+          <h1 className="mt-7 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+            {data.profile.name}
           </h1>
 
-          <p
-            className="mt-7 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground animate-fade-in"
-            style={{ animationDelay: '0.7s', animationFillMode: 'both' }}
-          >
+          <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-primary md:text-base">
+            {hero.title} {hero.subtitle}
+          </p>
+
+          <p className="mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
             {hero.description}
           </p>
 
-          <div
-            className="mt-9 flex flex-col items-center gap-3 sm:flex-row md:items-start animate-fade-slide-up"
-            style={{ animationDelay: '0.85s', animationFillMode: 'both' }}
-          >
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={() => go(hero.buttons.primary.action)}
-              className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-105"
+              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
             >
               {hero.buttons.primary.text}
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                <path d="M7 7h10v10" />
-                <path d="M7 17 17 7" />
-              </svg>
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
             </button>
             <button
               onClick={() => go(hero.buttons.secondary.action)}
-              className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium text-foreground transition-colors hover:border-primary/50"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:border-primary/40"
             >
               {hero.buttons.secondary.text}
             </button>
           </div>
+
+          <button
+            onClick={() => go('about')}
+            aria-label="Scroll to about"
+            className="mt-12 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+          >
+            <ArrowDown size={14} />
+            Scroll
+          </button>
         </div>
 
-        <div
-          className="relative shrink-0 animate-fade-scale-in"
-          style={{ animationDelay: '0.5s', animationFillMode: 'both' }}
-        >
-          <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/40 to-accent/40 blur-3xl" />
-          <div className="relative h-64 w-64 overflow-hidden rounded-full border-2 border-border bg-secondary sm:h-72 sm:w-72 md:h-80 md:w-80">
-            <img
-              src={data.profile.profileImage}
-              alt={data.profile.name}
-              width={320}
-              height={320}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="h-full w-full object-cover"
-            />
+        <div className="flex flex-col gap-6">
+          <div className="relative mx-auto w-full max-w-[300px] lg:mx-0 lg:max-w-none">
+            <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(124,92,255,0.75)]">
+              <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+                <img
+                  src={data.profile.profileImage}
+                  alt={data.profile.name}
+                  width={340}
+                  height={425}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
           </div>
+
+          <dl className="w-full rounded-2xl border border-border bg-card/60 p-2">
+            {metadata.map((row) => (
+              <div
+                key={row.label}
+                className="flex items-baseline justify-between gap-4 rounded-xl px-3 py-2.5 transition-colors hover:bg-secondary"
+              >
+                <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {row.label}
+                </dt>
+                <dd className="text-right font-mono text-xs text-foreground">
+                  {values[row.key]}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
-
-      <button
-        onClick={() => go('about')}
-        aria-label="Scroll to about"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-fade-in"
-        style={{ animationDelay: '1.2s', animationFillMode: 'both' }}
-      >
-        <span className="block animate-bounce-arrow" style={{ animationDuration: '1.6s' }}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 5v14" />
-            <path d="m19 12-7 7-7-7" />
-          </svg>
-        </span>
-      </button>
     </section>
   )
 }

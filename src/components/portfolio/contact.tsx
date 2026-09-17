@@ -1,10 +1,14 @@
 import { useState } from 'react'
-import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { AlertCircle, CheckCircle, Mail, Send } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeading } from './section-heading'
 import { FacebookIcon, GithubIcon, LinkedinIcon } from './brand-icons'
 import { usePortfolioData } from '@/data/use-portfolio-data'
 
 const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, facebook: FacebookIcon } as const
+
+const fieldClass =
+  'rounded-[10px] border border-border bg-background/60 px-4 py-3 text-foreground outline-none transition-colors duration-200 placeholder:text-muted-foreground/50 focus:border-primary/60'
 
 export default function Contact() {
   const { data } = usePortfolioData()
@@ -16,7 +20,7 @@ export default function Contact() {
     setStatus('sending')
 
     const form = e.currentTarget
-    const data = {
+    const payload = {
       name: (form.elements.namedItem('name') as HTMLInputElement).value,
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
@@ -26,7 +30,7 @@ export default function Contact() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       })
 
       if (!res.ok) throw new Error()
@@ -38,52 +42,42 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative px-6 py-28 md:py-36">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[60px] will-change-[filter]" />
-
-      <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
+    <section id="contact" className="relative px-6 py-24 md:py-32">
+      <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2 md:gap-16">
         <div>
-          <Reveal>
-            <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-primary">{contact.sectionTitle}</p>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-              {contact.heading}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-md text-pretty leading-relaxed text-muted-foreground">
-              {contact.description}
-            </p>
-          </Reveal>
+          <SectionHeading
+            index="06"
+            label={contact.sectionTitle}
+            title={contact.heading}
+            description={contact.description}
+          />
 
           <Reveal delay={0.15}>
             <a
               href={`mailto:${contact.email}`}
-              className="mt-8 inline-flex items-center gap-3 text-lg font-medium text-foreground transition-colors hover:text-primary"
+              className="mt-8 inline-flex items-center gap-3 font-mono text-sm text-foreground transition-colors duration-200 hover:text-primary"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-secondary text-primary">
-                <Mail size={18} />
+              <span className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card text-primary">
+                <Mail size={16} />
               </span>
               {contact.email}
             </a>
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-8 flex gap-3">
+            <div className="mt-8 flex gap-2.5">
               {(['github', 'linkedin', 'facebook'] as const).map((key) => {
                 const Icon = socialIcons[key]
-                const href = social[key]
                 return (
                   <a
                     key={key}
-                    href={href}
+                    href={social[key]}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={key}
-                    className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-1 hover:border-primary/50 hover:text-primary"
+                    className="grid h-10 w-10 place-items-center rounded-lg border border-border bg-card text-muted-foreground transition-colors duration-200 hover:border-primary/40 hover:text-primary"
                   >
-                    <Icon size={18} />
+                    <Icon size={16} />
                   </a>
                 )
               })}
@@ -92,48 +86,36 @@ export default function Contact() {
         </div>
 
         <Reveal delay={0.1}>
-          <div className="glass rounded-3xl p-6 sm:p-8">
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <label className="flex flex-col gap-2 text-sm">
-                <span className="text-muted-foreground">Name</span>
-                <input
-                  required
-                  name="name"
-                  type="text"
-                  placeholder="Your name"
-                  className="rounded-xl border border-border bg-background/40 px-4 py-3 text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/60"
-                />
+                <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">Name</span>
+                <input required name="name" type="text" placeholder="Your name" className={fieldClass} />
               </label>
               <label className="flex flex-col gap-2 text-sm">
-                <span className="text-muted-foreground">Email</span>
-                <input
-                  required
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  className="rounded-xl border border-border bg-background/40 px-4 py-3 text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/60"
-                />
+                <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">Email</span>
+                <input required name="email" type="email" placeholder="you@example.com" className={fieldClass} />
               </label>
               <label className="flex flex-col gap-2 text-sm">
-                <span className="text-muted-foreground">Message</span>
+                <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">Message</span>
                 <textarea
                   required
                   name="message"
                   rows={4}
                   placeholder="Tell me about your project..."
-                  className="resize-none rounded-xl border border-border bg-background/40 px-4 py-3 text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/60"
+                  className={`resize-none ${fieldClass}`}
                 />
               </label>
 
               {status === 'sent' && (
-                <div className="flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm text-emerald-400 animate-fade-slide-up">
+                <div className="flex items-center gap-2 rounded-[10px] border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-400 animate-fade-up">
                   <CheckCircle size={16} />
-                  Message sent successfully! I'll get back to you soon.
+                  Message sent successfully! I&apos;ll get back to you soon.
                 </div>
               )}
 
               {status === 'error' && (
-                <div className="flex items-center gap-2 rounded-xl bg-red-500/15 px-4 py-3 text-sm text-red-400 animate-fade-slide-up">
+                <div className="flex items-center gap-2 rounded-[10px] border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400 animate-fade-up">
                   <AlertCircle size={16} />
                   Something went wrong. Please try again or email me directly.
                 </div>
@@ -142,10 +124,10 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {status === 'sending' ? 'Sending...' : 'Send Message'}
-                <Send size={16} />
+                <Send size={15} />
               </button>
             </form>
           </div>

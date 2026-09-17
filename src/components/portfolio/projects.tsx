@@ -45,7 +45,7 @@ function ProjectCard({
 
   return (
     <Reveal delay={i * 0.05} className="h-full">
-      <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_24px_70px_-48px_rgba(124,92,255,0.85)]">
+      <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_24px_70px_-48px_rgba(124,92,255,0.85),inset_0_1px_0_0_rgba(255,255,255,0.04)]">
         <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
           <img
             src={p.image}

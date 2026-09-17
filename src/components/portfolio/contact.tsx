@@ -86,7 +86,7 @@ export default function Contact() {
         </div>
 
         <Reveal delay={0.1}>
-          <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] sm:p-7">
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <label className="flex flex-col gap-2 text-sm">
                 <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">Name</span>

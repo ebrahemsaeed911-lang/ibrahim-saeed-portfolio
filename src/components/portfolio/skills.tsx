@@ -44,7 +44,7 @@ export default function Skills() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {byGroup.map(({ group, items }, gi) => (
             <Reveal key={group} delay={gi * 0.05} className="h-full">
-              <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5">
+              <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
                     {group}

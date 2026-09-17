@@ -42,6 +42,10 @@ export function Hero() {
 
           <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-primary md:text-base">
             {hero.title} {hero.subtitle}
+            <span
+              aria-hidden="true"
+              className="animate-caret ms-1.5 inline-block h-3.5 w-[2px] translate-y-0.5 rounded-full bg-primary align-middle md:h-4"
+            />
           </p>
 
           <p className="mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -79,7 +83,7 @@ export function Hero() {
 
         <div className="flex flex-col gap-6">
           <div className="relative mx-auto w-full max-w-[300px] lg:mx-0 lg:max-w-none">
-            <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(124,92,255,0.75)]">
+            <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(124,92,255,0.75),inset_0_1px_0_0_rgba(255,255,255,0.05)]">
               <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
                 <img
                   src={data.profile.profileImage}
@@ -95,7 +99,7 @@ export function Hero() {
             </div>
           </div>
 
-          <dl className="w-full rounded-2xl border border-border bg-card/60 p-2">
+          <dl className="w-full rounded-2xl border border-border bg-card/60 p-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
             {metadata.map((row) => (
               <div
                 key={row.label}

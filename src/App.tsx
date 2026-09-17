@@ -27,6 +27,7 @@ export default function App() {
 
   return (
     <>
+      <div aria-hidden="true" className="vignette pointer-events-none fixed inset-0 -z-10" />
       <Navbar />
       <main className="relative">
         <Hero />

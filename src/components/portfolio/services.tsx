@@ -28,7 +28,7 @@ export default function Services() {
             const Icon = iconMap[s.icon] || MonitorSmartphone
             return (
               <Reveal key={s.title} delay={i * 0.06} className="h-full">
-                <div className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-colors duration-300 hover:border-primary/30">
+                <div className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] transition-colors duration-300 hover:border-primary/30">
                   <div className="flex items-start justify-between">
                     <span className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-secondary text-primary">
                       <Icon size={19} />

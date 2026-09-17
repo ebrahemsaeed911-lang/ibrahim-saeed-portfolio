@@ -7,7 +7,7 @@ export default function Experience() {
   const { experience } = data
 
   return (
-    <section id="experience" className="relative px-6 py-24 md:py-32">
+    <section id="experience" className="relative scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           index="03"

@@ -74,10 +74,10 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
+      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 animate-fade-up">
         <nav
           aria-label="Primary"
-          className={`flex w-full max-w-5xl items-center justify-between rounded-2xl px-2.5 py-2 transition-all duration-300 md:px-3 ${
+          className={`relative flex w-full max-w-5xl items-center justify-between overflow-hidden rounded-2xl px-2.5 py-2 transition-all duration-300 md:px-3 ${
             scrolled || open
               ? 'glass shadow-[0_12px_40px_-24px_rgba(0,0,0,0.9)]'
               : 'border border-transparent'
@@ -138,14 +138,14 @@ export function Navbar() {
               {open ? <X size={17} /> : <Menu size={17} />}
             </button>
           </div>
+
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-primary transition-transform duration-150 ease-out"
+            style={{ transform: `scaleX(${progress})` }}
+          />
         </nav>
       </header>
-
-      <div
-        aria-hidden="true"
-        className="fixed inset-x-0 top-0 z-[60] h-px origin-left bg-primary"
-        style={{ transform: `scaleX(${progress})` }}
-      />
 
       {open && (
         <div className="fixed inset-0 z-40 flex flex-col bg-background/95 px-6 pb-10 pt-24 backdrop-blur-xl md:hidden animate-fade-in">

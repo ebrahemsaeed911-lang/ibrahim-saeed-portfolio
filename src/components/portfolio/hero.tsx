@@ -29,18 +29,27 @@ export function Hero() {
 
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-20">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-3.5 py-1.5">
+          <div
+            className="animate-fade-up inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-3.5 py-1.5"
+            style={{ animationDelay: '0.05s' }}
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             <span className="font-mono text-xs tracking-wide text-muted-foreground">
               {hero.badge}
             </span>
           </div>
 
-          <h1 className="mt-7 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+          <h1
+            className="animate-fade-up mt-7 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
+            style={{ animationDelay: '0.12s' }}
+          >
             {data.profile.name}
           </h1>
 
-          <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-primary md:text-base">
+          <p
+            className="animate-fade-up mt-4 font-mono text-sm uppercase tracking-[0.18em] text-primary md:text-base"
+            style={{ animationDelay: '0.2s' }}
+          >
             {hero.title} {hero.subtitle}
             <span
               aria-hidden="true"
@@ -48,11 +57,17 @@ export function Hero() {
             />
           </p>
 
-          <p className="mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p
+            className="animate-fade-up mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg"
+            style={{ animationDelay: '0.28s' }}
+          >
             {hero.description}
           </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div
+            className="animate-fade-up mt-9 flex flex-col gap-3 sm:flex-row"
+            style={{ animationDelay: '0.36s' }}
+          >
             <button
               onClick={() => go(hero.buttons.primary.action)}
               className="group inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
@@ -74,14 +89,15 @@ export function Hero() {
           <button
             onClick={() => go('about')}
             aria-label="Scroll to about"
-            className="mt-12 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+            className="animate-fade-up mt-12 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+            style={{ animationDelay: '0.44s' }}
           >
             <ArrowDown size={14} />
             Scroll
           </button>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="animate-fade-up flex flex-col gap-6" style={{ animationDelay: '0.18s' }}>
           <div className="relative mx-auto w-full max-w-[300px] lg:mx-0 lg:max-w-none">
             <div className="rounded-2xl border border-border bg-card p-1.5 shadow-[0_30px_90px_-56px_rgba(124,92,255,0.75),inset_0_1px_0_0_rgba(255,255,255,0.05)]">
               <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">

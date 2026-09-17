@@ -42,7 +42,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative px-6 py-24 md:py-32">
+    <section id="contact" className="relative scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2 md:gap-16">
         <div>
           <SectionHeading

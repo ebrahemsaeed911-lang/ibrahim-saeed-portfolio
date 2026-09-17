@@ -7,7 +7,7 @@ export default function About() {
   const { about } = data
 
   return (
-    <section id="about" className="relative px-6 pb-24 pt-20 md:pb-32 md:pt-24">
+    <section id="about" className="relative scroll-mt-24 px-6 pb-24 pt-20 md:pb-32 md:pt-24">
       <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[320px_minmax(0,1fr)] md:gap-16">
         <Reveal>
           <div className="mx-auto w-full max-w-[300px] md:max-w-none">

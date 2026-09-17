@@ -14,7 +14,7 @@ export default function Projects() {
   const { projects } = data
 
   return (
-    <section id="projects" className="relative px-6 py-24 md:py-32">
+    <section id="projects" className="relative scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading index="04" label={projects.sectionTitle} title={projects.heading} />

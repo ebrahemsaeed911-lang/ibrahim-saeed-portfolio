@@ -27,7 +27,7 @@ export default function Skills() {
   const hasLearning = skills.items.some((s) => s.learning)
 
   return (
-    <section id="skills" className="relative px-6 py-24 md:py-32">
+    <section id="skills" className="relative scroll-mt-24 px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading index="02" label={skills.sectionTitle} title={skills.heading} />

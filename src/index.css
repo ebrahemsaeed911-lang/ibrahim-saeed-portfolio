@@ -203,8 +203,8 @@
     }
   }
 
-  .animate-fade-up { animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-  .animate-fade-in { animation: fade-in 0.5s ease forwards; }
+  .animate-fade-up { animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-fade-in { animation: fade-in 0.5s ease both; }
 
   @keyframes caret {
     0%,
@@ -254,8 +254,10 @@
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }
